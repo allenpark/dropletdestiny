@@ -15,9 +15,9 @@ Droplet Destiny (6.073 fall 2013 project 3)
 - Modify the files in `tsscripts/`, then run (from the root directory):
 
 ```
-tsc -c --out templates/[JS_OUTPUT].js tsscripts/[INPUT].ts
+tsc -c --out templates/dropletdestiny.js tsscripts/dropletdestiny.ts
 
-makehtml --mode canvas-debug -t templates -t . -o [HTML_OUTPUT].html [JS_OUTPUT].js [TEMPLATE].html
+makehtml --mode canvas-debug -t templates -t . -o dropletdestiny_test.html dropletdestiny.js dropletdestiny.html
 ```
 
 To test the game:
