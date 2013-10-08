@@ -23,7 +23,7 @@
 /*{# our scripts #}*/
 // Example:
 /// <reference path="math.ts" />
-/// <reference path="droplet.ts" />
+/// <reference path="player.ts" />
 
 
 TurbulenzEngine.onload = function onloadFn()
@@ -86,7 +86,13 @@ TurbulenzEngine.onload = function onloadFn()
 
     inputDevice.addEventListener('keydown', handleKeyDown);
 
-    var protagonist = new Droplet(graphicsDevice, md);
+    inputDevice.addEventListener('keyup', handleKeyUp)
+
+    var protagonist = new Player(graphicsDevice, md);
+
+    var keyCode;
+
+    var keyPressed = false;
 
     function update() {
         /* Update code goes here */
@@ -97,6 +103,8 @@ TurbulenzEngine.onload = function onloadFn()
         {
             world.step(1.0/60);
 
+            protagonist.update(keyCode, keyPressed);
+
             protagonist.draw(draw2D);
 
             graphicsDevice.endFrame();
@@ -104,7 +112,12 @@ TurbulenzEngine.onload = function onloadFn()
     }
 
     function handleKeyDown(e) {
-      protagonist.update(e);
+        keyCode = e;
+        keyPressed = true;
+    }
+
+    function handleKeyUp(e) {
+        keyPressed = false;
     }
 
     restartGame();
