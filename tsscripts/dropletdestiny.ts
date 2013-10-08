@@ -110,15 +110,19 @@ TurbulenzEngine.onload = function onloadFn()
     }
 
     function handleKeyDown(e) {
+        var index = keyCodes.indexOf(e);
+        if (index > -1) {
+            console.log('Error: adding existing key ' + e + ' to keyCodes.');
+        }
         keyCodes.push(e);
     }
 
     function handleKeyUp(e) {
         var index = keyCodes.indexOf(e);
         if (index > -1) {
-          keyCodes.splice(index, 1);
+            keyCodes.splice(index, 1);
         } else {
-          console.log('Error: attempted to remove missing key ' + e + ' from keyCodes.');
+            console.log('Error: attempted to remove missing key ' + e + ' from keyCodes.');
         }
     }
 
