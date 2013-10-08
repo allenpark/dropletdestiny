@@ -8,17 +8,21 @@ class Player {
   pos_y:  number = 100;
   max_x:  number = 100;
   max_y:  number = 500;
+  stageWidth: number;
+  stageHeight: number;
 
-  constructor(graphicsDevice, mathDevice) {
+  constructor(graphicsDevice, mathDevice, canvasX, canvasY) {
     droplet_md = mathDevice;
     this.sprite = Draw2DSprite.create({
         width:  this.width,
         height: this.height,
-        origin: [this.width / 2, this.height / 2],
+        origin: [0, 0],
         x:      this.getSpriteX(),
         y:      this.getSpriteY(),
         color: [1.0, 1.0, 1.0, 1.0],
     });
+    this.stageWidth = canvasX;
+    this.stageHeight = canvasY;
     this.loadTexture(graphicsDevice, this);
   }
 
@@ -56,24 +60,51 @@ class Player {
   update(keys) {
     for (var i = 0; i < keys.length; i++) {
       var key = keys[i];
+      // TODO: support sliding down a side so movements partially into a wall don't get completely undone
       switch (key) {
         case 200: // Left
         case 0: // A
           this.pos_x --;
+          if (!this.inRangeX(this.pos_x) || !this.inCanvas()) {
+            this.pos_x ++;
+          }
           break;
         case 201: // Right
         case 3: // D
           this.pos_x ++;
+          if (!this.inRangeX(this.pos_x) || !this.inCanvas()) {
+            this.pos_x --;
+          }
           break;
         case 202: // Up
         case 22: // W
           this.pos_y ++;
+          if (!this.inRangeY(this.pos_y) || !this.inCanvas()) {
+            this.pos_y --;
+          }
           break;
         case 203: // Down
         case 18: // S
           this.pos_y --;
+          if (!this.inRangeY(this.pos_y) || !this.inCanvas()) {
+            this.pos_y ++;
+          }
           break;
       }
     }
+  }
+  
+  inRangeX(x) {
+    return 0 <= x && x < this.max_x;
+  }
+  
+  inRangeY(y) {
+    return 0 <= y && y < this.max_y;
+  }
+  
+  inCanvas() {
+    var x = this.getSpriteX();
+    var y = this.getSpriteY();
+    return 0 <= x && x <= this.stageWidth - this.width && 0 <= y && y <= this.stageHeight - this.height;
   }
 }

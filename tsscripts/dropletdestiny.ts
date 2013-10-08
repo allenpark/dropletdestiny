@@ -88,7 +88,7 @@ TurbulenzEngine.onload = function onloadFn()
 
     inputDevice.addEventListener('keyup', handleKeyUp)
 
-    var protagonist = new Player(graphicsDevice, md);
+    var protagonist = new Player(graphicsDevice, md, stageWidth, stageHeight);
 
     var keyCodes = [];
 
