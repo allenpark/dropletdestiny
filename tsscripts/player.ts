@@ -7,6 +7,8 @@ class Player {
   sprite: Draw2DSprite;
   pos_x:  number = 50;
   pos_y:  number = 100;
+  min_x:  number = 0;
+  min_y:  number = 0;
   max_x:  number = 100;
   max_y:  number = 500;
   stageWidth: number;
@@ -96,11 +98,11 @@ class Player {
   }
   
   inRangeX(x) {
-    return 0 <= x && x < this.max_x;
+    return this.min_x <= x && x < this.max_x;
   }
   
   inRangeY(y) {
-    return 0 <= y && y < this.max_y;
+    return this.min_y <= y && y < this.max_y;
   }
   
   inCanvas() {
