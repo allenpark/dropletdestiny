@@ -1,0 +1,9 @@
+body {
+  background-color: #030;
+}
+
+#engine {
+    width: 640px;
+    height: 540px;
+    margin: 0 auto;
+}

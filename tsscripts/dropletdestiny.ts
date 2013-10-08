@@ -23,10 +23,13 @@
 /*{# our scripts #}*/
 // Example:
 /// <reference path="math.ts" />
+/// <reference path="droplet.ts" />
 
 
 TurbulenzEngine.onload = function onloadFn()
 {
+    var intervalID;
+    var isOver = false;
 
     var graphicsDevice = TurbulenzEngine.createGraphicsDevice({});
     var inputDevice = TurbulenzEngine.createInputDevice({});
@@ -81,6 +84,10 @@ TurbulenzEngine.onload = function onloadFn()
 
     world.addRigidBody(border);
 
+    inputDevice.addEventListener('keydown', handleKeyDown);
+
+    var protagonist = new Droplet(graphicsDevice, md);
+
     function update() {
         /* Update code goes here */
 
@@ -90,8 +97,20 @@ TurbulenzEngine.onload = function onloadFn()
         {
             world.step(1.0/60);
 
+            protagonist.draw(draw2D);
+
             graphicsDevice.endFrame();
         }
     }
 
+    function handleKeyDown(e) {
+      protagonist.update(e);
+    }
+
+    restartGame();
+
+    function restartGame() {
+      intervalID = TurbulenzEngine.setInterval(update, 1000 / 60);
+      isOver = false;
+    }
 }
