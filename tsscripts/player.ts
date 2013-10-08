@@ -1,6 +1,7 @@
 var droplet_md;
 
 class Player {
+  speed: number = 2.0;
   width:  number = 32;
   height: number = 32;
   sprite: Draw2DSprite;
@@ -64,30 +65,30 @@ class Player {
       switch (key) {
         case 200: // Left
         case 0: // A
-          this.pos_x --;
+          this.pos_x -= this.speed;
           if (!this.inRangeX(this.pos_x) || !this.inCanvas()) {
-            this.pos_x ++;
+            this.pos_x += this.speed;
           }
           break;
         case 201: // Right
         case 3: // D
-          this.pos_x ++;
+          this.pos_x += this.speed;
           if (!this.inRangeX(this.pos_x) || !this.inCanvas()) {
-            this.pos_x --;
+            this.pos_x -= this.speed;
           }
           break;
         case 202: // Up
         case 22: // W
-          this.pos_y ++;
+          this.pos_y += this.speed;
           if (!this.inRangeY(this.pos_y) || !this.inCanvas()) {
-            this.pos_y --;
+            this.pos_y -= this.speed;
           }
           break;
         case 203: // Down
         case 18: // S
-          this.pos_y --;
+          this.pos_y -= this.speed;
           if (!this.inRangeY(this.pos_y) || !this.inCanvas()) {
-            this.pos_y ++;
+            this.pos_y += this.speed;
           }
           break;
       }
