@@ -1,6 +1,6 @@
 var droplet_md;
 
-class Droplet {
+class Player {
   width:  number = 32;
   height: number = 32;
   sprite: Draw2DSprite;
@@ -41,31 +41,36 @@ class Droplet {
     draw2D.end();
   }
 
-  update(key) {
-    switch (key) {
-      case 200: // Left
-      case 0: // A
-        this.sprite.x += -2;
-        this.sprite.y += 1;
-      break;
-      case 201: // Right
-      case 3: // D
-        this.sprite.x += 2;
-        this.sprite.y += -1;
-      break;
-      case 202: // Up
-      case 22: // W
-        this.sprite.x += -1;
-        this.sprite.y += -2;
-      break;
-      case 203: // Down
-      case 18: // S
-        this.sprite.x += 1;
-        this.sprite.y += 2;
-      break;
-      default:
-      return 1;
+  update(key, keyPressed) {
+    if (keyPressed){
+      switch (key) {
+        case 200: // Left
+        case 0: // A
+          this.sprite.x += -2;
+          this.sprite.y += 1;
+        break;
+        case 201: // Right
+        case 3: // D
+          this.sprite.x += 2;
+          this.sprite.y += -1;
+        break;
+        case 202: // Up
+        case 22: // W
+          this.sprite.x += -1;
+          this.sprite.y += -2;
+        break;
+        case 203: // Down
+        case 18: // S
+          this.sprite.x += 1;
+          this.sprite.y += 2;
+        break;
+        default:
+        return 1;
+      return 0;
+      }
     }
-    return 0;
+    else{
+      return 0;
+    }
   }
 }
