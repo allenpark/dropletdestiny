@@ -90,9 +90,7 @@ TurbulenzEngine.onload = function onloadFn()
 
     var protagonist = new Player(graphicsDevice, md);
 
-    var keyCode;
-
-    var keyPressed = false;
+    var keyCodes = [];
 
     function update() {
         /* Update code goes here */
@@ -103,7 +101,7 @@ TurbulenzEngine.onload = function onloadFn()
         {
             world.step(1.0/60);
 
-            protagonist.update(keyCode, keyPressed);
+            protagonist.update(keyCodes);
 
             protagonist.draw(draw2D);
 
@@ -112,12 +110,16 @@ TurbulenzEngine.onload = function onloadFn()
     }
 
     function handleKeyDown(e) {
-        keyCode = e;
-        keyPressed = true;
+        keyCodes.push(e);
     }
 
     function handleKeyUp(e) {
-        keyPressed = false;
+        var index = keyCodes.indexOf(e);
+        if (index > -1) {
+          keyCodes.splice(index, 1);
+        } else {
+          console.log('Error: attempted to remove missing key ' + e + ' from keyCodes.');
+        }
     }
 
     restartGame();
