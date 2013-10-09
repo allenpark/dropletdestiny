@@ -24,6 +24,9 @@
 // Example:
 /// <reference path="math.ts" />
 /// <reference path="player.ts" />
+/// <reference path="field.ts" />
+/// <reference path="obstacle.ts" />
+/// <reference path="droplet.ts" />
 
 
 TurbulenzEngine.onload = function onloadFn()
@@ -72,6 +75,7 @@ TurbulenzEngine.onload = function onloadFn()
     inputDevice.addEventListener('keyup', handleKeyUp)
 
     var protagonist = new Player(graphicsDevice, md, stageWidth, stageHeight);
+    var field = new Field(graphicsDevice, md, stageWidth, stageHeight, [], [])
 
     var keyCodes = [];
 
@@ -86,9 +90,11 @@ TurbulenzEngine.onload = function onloadFn()
             world.step(1.0/60);
 
             protagonist.update(keyCodes);
+            field.update(0);
 
             draw2D.begin('additive');
             protagonist.draw(draw2D);
+            field.draw(draw2D)
             for (var i = 0; i < 4; i++) {
               // Uncomment following line to make a border.
               //draw2D.draw(borders[i]);
