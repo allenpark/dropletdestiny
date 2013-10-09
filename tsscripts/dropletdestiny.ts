@@ -95,14 +95,15 @@ TurbulenzEngine.onload = function onloadFn()
             }
             draw2D.end();
             
+            // Drawing the polygon border.
             ctx.beginFrame(graphicsDevice, [0, 0, canvas.width, canvas.height]);
-            var concavePoints = [[0, 0], [0, protagonist.height], [(canvas.height - protagonist.height) / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0 + canvas.height / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0, 0]];
-            var point = concavePoints[0];
+            var borderPoints = [[0, 0], [0, protagonist.height], [(canvas.height - protagonist.height) / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0 + canvas.height / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0, 0]];
+            var point = borderPoints[0];
             ctx.save();
             ctx.beginPath();
             ctx.moveTo(point[0], point[1]);
-            for(i = 1; i < concavePoints.length; i += 1) {
-                point = concavePoints[i];
+            for(i = 1; i < borderPoints.length; i += 1) {
+                point = borderPoints[i];
                 ctx.lineTo(point[0], point[1]);
             }
             ctx.closePath();
