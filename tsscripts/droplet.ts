@@ -6,11 +6,18 @@ class Droplet {
   y: number;
   points: number;
   
-  constructor(graphicsDevice, mathDevice, sprite, x, y, points) {
+  constructor(graphicsDevice, mathDevice, x, y, points) {
     droplet_md = mathDevice;
-    this.sprite = sprite;
     this.x = x;
     this.y = y;
+    this.sprite = Draw2DSprite.create({
+        width:  32,
+        height: 32,
+        origin: [0, 0],
+        x:      this.getSpriteX(),
+        y:      this.getSpriteY(),
+        color: [1.0, 1.0, 1.0, 1.0],
+    });
     this.points = points;
     this.loadTexture(graphicsDevice);
   }

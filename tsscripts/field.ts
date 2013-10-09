@@ -14,21 +14,6 @@ class Field {
     this.obstacles = obstacles;
     this.stageWidth = canvasX;
     this.stageHeight = canvasY;
-    this.loadTexture(graphicsDevice, this);
-  }
-
-  loadTexture(graphicsDevice, droplet) {
-    // TODO: make this do the right thing.
-    graphicsDevice.createTexture({
-      src: "assets/textures/protagonist.png",
-      mipmaps: true,
-      onload: function (texture) {
-        if (texture) {
-          droplet.sprite.setTexture(texture);
-          droplet.sprite.setTextureRectangle([0, 0, texture.width, texture.height]);
-        }
-      }
-    });
   }
 
   draw(draw2D) {

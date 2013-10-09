@@ -76,7 +76,7 @@ TurbulenzEngine.onload = function onloadFn()
 
     var protagonist = new Player(graphicsDevice, md, stageWidth, stageHeight);
     
-    var field = new Field(graphicsDevice, md, stageWidth, stageHeight, [], []);
+    var field = new Field(graphicsDevice, md, stageWidth, stageHeight, [new Droplet(graphicsDevice, md, 50, 50, 5)], [new Obstacle(graphicsDevice, md, 100, 100, -50)]);
 
     var keyCodes = [];
 
