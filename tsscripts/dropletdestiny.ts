@@ -27,6 +27,7 @@
 /// <reference path="field.ts" />
 /// <reference path="droplet.ts" />
 /// <reference path="obstacle.ts" />
+/// <reference path="background.ts" />
 
 
 TurbulenzEngine.onload = function onloadFn()
@@ -77,6 +78,7 @@ TurbulenzEngine.onload = function onloadFn()
     var protagonist = new Player(graphicsDevice, md, stageWidth, stageHeight);
     
     var field = new Field(graphicsDevice, md, stageWidth, stageHeight, [new Droplet(graphicsDevice, md, 50, 50, 5)], [new Obstacle(graphicsDevice, md, 100, 100, -50)]);
+	var bg = new Background(graphicsDevice, md, stageWidth, stageHeight);
 
     var keyCodes = [];
 
@@ -100,8 +102,11 @@ TurbulenzEngine.onload = function onloadFn()
             //DRAWS EVERYTHING
             // additive makes dark colors transparent...
             draw2D.begin('additive');
+			
             protagonist.draw(draw2D);
             field.draw(draw2D);
+			bg.draw(draw2D);
+			
             for (var i = 0; i < 4; i++) {
               // Uncomment following line to make a border.
               //draw2D.draw(borders[i]);
