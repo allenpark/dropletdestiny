@@ -59,30 +59,13 @@ TurbulenzEngine.onload = function onloadFn()
         positionIterations : 8
     });
 
-    var thickness = 1
-    var border = phys2D.createRigidBody({
-        type: 'static',
-        shapes: [
-            phys2D.createPolygonShape({
-                vertices: phys2D.createRectangleVertices(
-                    0, 0, thickness, stageHeight)
-            }), 
-            phys2D.createPolygonShape({
-                vertices: phys2D.createRectangleVertices(
-                    0, 0, stageWidth, thickness)
-            }), 
-            phys2D.createPolygonShape({
-                vertices: phys2D.createRectangleVertices(
-                    (stageWidth - thickness), 0, stageWidth, stageHeight)
-            }), 
-            phys2D.createPolygonShape({
-                vertices: phys2D.createRectangleVertices(
-                    0, (stageHeight - thickness), stageWidth, stageHeight)
-            })
-        ]
-    });
-
-    world.addRigidBody(border);
+    var borderThickness = 1;
+    var borders =  []
+    var borderColor = [1.0, 0.0, 0.0, 1.0];
+    borders.push({color: borderColor, destinationRectangle: [0, 0, borderThickness, stageHeight]});
+    borders.push({color: borderColor, destinationRectangle: [0, 0, stageWidth, borderThickness]});
+    borders.push({color: borderColor, destinationRectangle: [(stageWidth - borderThickness), 0, stageWidth, stageHeight]});
+    borders.push({color: borderColor, destinationRectangle: [0, (stageHeight - borderThickness), stageWidth, stageHeight]});
 
     inputDevice.addEventListener('keydown', handleKeyDown);
 
@@ -99,11 +82,36 @@ TurbulenzEngine.onload = function onloadFn()
     
         if (graphicsDevice.beginFrame())
         {
+            //graphicsDevice.clear([1.0, 0.5, 0.25, 1.0], 1.0);
             world.step(1.0/60);
 
             protagonist.update(keyCodes);
 
+            draw2D.begin('additive');
             protagonist.draw(draw2D);
+            for (var i = 0; i < 4; i++) {
+              // Uncomment following line to make a border.
+              //draw2D.draw(borders[i]);
+            }
+            draw2D.end();
+            
+            ctx.beginFrame(graphicsDevice, [0, 0, canvas.width, canvas.height]);
+            var concavePoints = [[0, 0], [0, protagonist.height], [(canvas.height - protagonist.height) / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0 + canvas.height / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0, 0]];
+            var point = concavePoints[0];
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(point[0], point[1]);
+            for(i = 1; i < concavePoints.length; i += 1) {
+                point = concavePoints[i];
+                ctx.lineTo(point[0], point[1]);
+            }
+            ctx.closePath();
+            //ctx.fillStyle = '#00F';
+            //ctx.fill();
+            ctx.strokeStyle = '#FFF';
+            ctx.stroke();
+            ctx.restore();
+            ctx.endFrame();
 
             graphicsDevice.endFrame();
         }

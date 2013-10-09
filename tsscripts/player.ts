@@ -30,11 +30,11 @@ class Player {
   }
 
   private getSpriteX() {
-    return -1 * this.pos_x + 2 * this.pos_y;
+    return 2 * this.pos_x + 1 * this.pos_y;
   }
   
   private getSpriteY() {
-    return 2 * this.pos_x + 1 * this.pos_y;
+    return -1 * this.pos_x + 2 * this.pos_y;
   }
 
   loadTexture(graphicsDevice, droplet) {
@@ -55,9 +55,7 @@ class Player {
     this.sprite.x = this.getSpriteX();
     this.sprite.y = this.getSpriteY();
     // additive makes dark colors transparent...
-    draw2D.begin('additive');
     draw2D.drawSprite(this.sprite);
-    draw2D.end();
   }
 
   update(keys) {
@@ -81,16 +79,16 @@ class Player {
           break;
         case 202: // Up
         case 22: // W
-          this.pos_y += this.speed;
+          this.pos_y -= this.speed;
           if (!this.inRangeY(this.pos_y) || !this.inCanvas()) {
-            this.pos_y -= this.speed;
+            this.pos_y += this.speed;
           }
           break;
         case 203: // Down
         case 18: // S
-          this.pos_y -= this.speed;
+          this.pos_y += this.speed;
           if (!this.inRangeY(this.pos_y) || !this.inCanvas()) {
-            this.pos_y += this.speed;
+            this.pos_y -= this.speed;
           }
           break;
       }
