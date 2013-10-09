@@ -1,4 +1,4 @@
-var droplet_md;
+var obstacle_md;
 
 class Obstacle {
   sprite: Draw2DSprite;
@@ -7,34 +7,42 @@ class Obstacle {
   points: number;
   
   constructor(graphicsDevice, mathDevice, sprite, x, y, points) {
-    droplet_md = mathDevice;
+    obstacle_md = mathDevice;
     this.sprite = sprite;
     this.x = x;
     this.y = y;
     this.points = points;
-    this.loadTexture(graphicsDevice, this);
+    this.loadTexture(graphicsDevice);
   }
 
-  loadTexture(graphicsDevice, droplet) {
-    // TODO: make this do the right thing.
+  private getSpriteX() {
+    return 2 * this.x + 1 * this.y;
+  }
+  
+  private getSpriteY() {
+    return -1 * this.x + 2 * this.y;
+  }
+
+  loadTexture(graphicsDevice) {
     graphicsDevice.createTexture({
-      src: "assets/textures/protagonist.png",
+      src: "assets/textures/brick.png",
       mipmaps: true,
       onload: function (texture) {
         if (texture) {
-          droplet.sprite.setTexture(texture);
-          droplet.sprite.setTextureRectangle([0, 0, texture.width, texture.height]);
+          this.sprite.setTexture(texture);
+          this.sprite.setTextureRectangle([0, 0, texture.width, texture.height]);
         }
-      }
+      }.bind(this)
     });
   }
 
-
-  draw(draw2D, frame) {
-    // TODO: fill in
+  draw(draw2D) {
+    this.sprite.x = this.getSpriteX();
+    this.sprite.y = this.getSpriteY();
+    draw2D.drawSprite(this.sprite);
   }
 
-  update(time) {
+  update() {
     // TODO: fill in
   }
 }

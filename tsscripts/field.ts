@@ -1,4 +1,4 @@
-var droplet_md;
+var field_md;
 
 class Field {
   width:  number = 32; // TODO: Find the right number.
@@ -9,7 +9,7 @@ class Field {
   stageHeight: number;
   
   constructor(graphicsDevice, mathDevice, canvasX, canvasY, droplets, obstacles) {
-    droplet_md = mathDevice;
+    field_md = mathDevice;
     this.droplets = droplets;
     this.obstacles = obstacles;
     this.stageWidth = canvasX;
@@ -31,12 +31,16 @@ class Field {
     });
   }
 
-
-  draw(draw2D, frame) {
-    // TODO: fill in
+  draw(draw2D) {
+    for (var i = 0; i < this.droplets.length; i++) {
+      this.droplets[i].draw(draw2D);
+    }
+    for (var i = 0; i < this.obstacles.length; i++) {
+      this.obstacles[i].draw(draw2D);
+    }
   }
 
-  update(time) {
+  update() {
     // TODO: fill in
   }
 }

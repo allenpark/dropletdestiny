@@ -1,4 +1,4 @@
-var droplet_md;
+var player_md;
 
 class Player {
   speed: number = 2.0;
@@ -15,7 +15,7 @@ class Player {
   stageHeight: number;
 
   constructor(graphicsDevice, mathDevice, canvasX, canvasY) {
-    droplet_md = mathDevice;
+    player_md = mathDevice;
     this.sprite = Draw2DSprite.create({
         width:  this.width,
         height: this.height,
@@ -26,7 +26,7 @@ class Player {
     });
     this.stageWidth = canvasX;
     this.stageHeight = canvasY;
-    this.loadTexture(graphicsDevice, this);
+    this.loadTexture(graphicsDevice);
   }
 
   private getSpriteX() {
@@ -37,24 +37,22 @@ class Player {
     return -1 * this.pos_x + 2 * this.pos_y;
   }
 
-  loadTexture(graphicsDevice, droplet) {
+  loadTexture(graphicsDevice) {
     graphicsDevice.createTexture({
       src: "assets/textures/protagonist.png",
       mipmaps: true,
       onload: function (texture) {
         if (texture) {
-          droplet.sprite.setTexture(texture);
-          droplet.sprite.setTextureRectangle([0, 0, texture.width, texture.height]);
+          this.sprite.setTexture(texture);
+          this.sprite.setTextureRectangle([0, 0, texture.width, texture.height]);
         }
-      }
+      }.bind(this)
     });
   }
-
 
   draw(draw2D) {
     this.sprite.x = this.getSpriteX();
     this.sprite.y = this.getSpriteY();
-    // additive makes dark colors transparent...
     draw2D.drawSprite(this.sprite);
   }
 
