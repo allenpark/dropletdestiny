@@ -24,6 +24,7 @@
 // Example:
 /// <reference path="math.ts" />
 /// <reference path="player.ts" />
+/// <reference path="background.ts" />
 
 
 TurbulenzEngine.onload = function onloadFn()
@@ -72,6 +73,7 @@ TurbulenzEngine.onload = function onloadFn()
     inputDevice.addEventListener('keyup', handleKeyUp)
 
     var protagonist = new Player(graphicsDevice, md, stageWidth, stageHeight);
+	var bg = new Background(graphicsDevice, md, stageWidth, stageHeight);
 
     var keyCodes = [];
 
@@ -88,7 +90,10 @@ TurbulenzEngine.onload = function onloadFn()
             protagonist.update(keyCodes);
 
             draw2D.begin('additive');
+			
             protagonist.draw(draw2D);
+			bg.draw(draw2D);
+			
             for (var i = 0; i < 4; i++) {
               // Uncomment following line to make a border.
               //draw2D.draw(borders[i]);
