@@ -1,0 +1,1 @@
+tsc -c --out templates/dropletdestiny.js tsscripts/dropletdestiny.ts && makehtml --mode canvas-debug -t templates -t . -o dropletdestiny_test.html dropletdestiny.js dropletdestiny.html && python -m SimpleHTTPServer
