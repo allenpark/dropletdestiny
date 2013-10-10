@@ -1,5 +1,3 @@
-//var droplet_md;
-
 class Field {
   width:  number = 32; // TODO: Find the right number.
   height: number = 500; // TODO: Find the right number.
@@ -19,22 +17,7 @@ class Field {
     this.obstacles = obstacles;
     this.stageWidth = canvasX;
     this.stageHeight = canvasY;
-    this.loadTexture(graphicsDevice, this);
     this.speed = 2.0
-  }
-
-  loadTexture(graphicsDevice, droplet) {
-    // TODO: make this do the right thing.
-    graphicsDevice.createTexture({
-      src: "assets/textures/protagonist.png",
-      mipmaps: true,
-      onload: function (texture) {
-        if (texture) {
-          droplet.sprite.setTexture(texture);
-          droplet.sprite.setTextureRectangle([0, 0, texture.width, texture.height]);
-        }
-      }
-    });
   }
 
   private isInBounds(object){

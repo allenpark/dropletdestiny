@@ -1,5 +1,3 @@
-//var droplet_md;
-
 class Droplet {
   sprite: Draw2DSprite;
   x: number;
@@ -10,12 +8,17 @@ class Droplet {
   height: number = 32;
   
   constructor(graphicsDevice, mathDevice, /*sprite,*/ x, y, points, speed) {
-    droplet_md = mathDevice;
-    //this.sprite = sprite;
     this.x = x;
     this.y = y;
+    this.sprite = Draw2DSprite.create({
+        width:  32,
+        height: 32,
+        origin: [0, 0],
+        x:      this.getSpriteX(),
+        y:      this.getSpriteY(),
+        color: [1.0, 1.0, 1.0, 1.0],
+    });
     this.points = points;
-    this.loadTexture(graphicsDevice, this);
     this.speed = speed;
     this.sprite = Draw2DSprite.create({
         width:  this.width,
@@ -25,20 +28,7 @@ class Droplet {
         y:      this.getSpriteY(),
         color: [1.0, 1.0, 1.0, 1.0],
     });
-  }
-
-  loadTexture(graphicsDevice, droplet) {
-    // TODO: make this do the right thing.
-    graphicsDevice.createTexture({
-      src: "assets/textures/protagonist.png",
-      mipmaps: true,
-      onload: function (texture) {
-        if (texture) {
-          droplet.sprite.setTexture(texture);
-          droplet.sprite.setTextureRectangle([0, 0, texture.width, texture.height]);
-        }
-      }
-    });
+    this.loadTexture(graphicsDevice);
   }
 
   private getSpriteX() {
@@ -47,6 +37,19 @@ class Droplet {
   
   private getSpriteY() {
     return -1 * this.x + 2 * this.y;
+  }
+
+  loadTexture(graphicsDevice) {
+    graphicsDevice.createTexture({
+      src: "assets/textures/cross.png",
+      mipmaps: true,
+      onload: function (texture) {
+        if (texture) {
+          this.sprite.setTexture(texture);
+          this.sprite.setTextureRectangle([0, 0, texture.width, texture.height]);
+        }
+      }.bind(this)
+    });
   }
 
   draw(draw2D) {
