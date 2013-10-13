@@ -8,8 +8,9 @@ class Background {
   pos_y:  number = 100;
   stageWidth: number;
   stageHeight: number;
+  speed: number = 0;
   
-  constructor(graphicsDevice, mathDevice, canvasX, canvasY) {
+  constructor(graphicsDevice, mathDevice, canvasX, canvasY, posX, posY) {
     this.sprite = Draw2DSprite.create({
         width:  this.width,
         height: this.height,
@@ -18,6 +19,8 @@ class Background {
         y:      this.getSpriteY(),
         color: [1.0, 1.0, 1.0, 1.0],
     });
+	this.pos_x = posX;
+	this.pos_y = posY;
     this.stageWidth = canvasX;
     this.stageHeight = canvasY;
     this.loadTexture(graphicsDevice, this);
@@ -43,9 +46,13 @@ class Background {
       }
     });
   }
-
+  
+  setSpeed(speed){
+	this.speed = speed;
+  }
 
   draw(draw2D) {
+	this.pos_y -= this.speed;
     this.sprite.x = this.getSpriteX();
     this.sprite.y = this.getSpriteY();
     // additive makes dark colors transparent...

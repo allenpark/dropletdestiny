@@ -75,10 +75,15 @@ TurbulenzEngine.onload = function onloadFn()
 
     inputDevice.addEventListener('keyup', handleKeyUp)
 
-    var protagonist = new Player(graphicsDevice, md, stageWidth, stageHeight);
     var field = new Field(graphicsDevice, md, stageWidth, stageHeight, [new Droplet(graphicsDevice, md, 50, 50, 5, 2.0)], [new Obstacle(graphicsDevice, md, 100, 100, -50, 2.0)]);
-	var bg = new Background(graphicsDevice, md, stageWidth, stageHeight);
-
+    var protagonist = new Player(graphicsDevice, md, stageWidth, stageHeight);
+	
+	var bgSprites = []
+	for (var i = 0; i < 100; i++) {
+		bgSprites[i] = new Background(graphicsDevice, md, stageWidth, stageHeight, 150 + Math.random()*100, 300 + Math.random()*1000);
+		bgSprites[i].setSpeed(Math.random()*5);
+	}
+	
     var keyCodes = [];
 
     function update() {
@@ -100,12 +105,15 @@ TurbulenzEngine.onload = function onloadFn()
 
             //DRAWS EVERYTHING
             // additive makes dark colors transparent...
-            draw2D.begin('additive');
+            draw2D.begin('alpha');
 			
-            protagonist.draw(draw2D);
-
-            field.draw(draw2D);
-			bg.draw(draw2D);
+			//rendering background
+			for(var i = 0; i < bgSprites.length; i++){
+				bgSprites[i].draw(draw2D);
+			}
+			
+            //field.draw(draw2D);
+			protagonist.draw(draw2D);
 			
             for (var i = 0; i < 4; i++) {
               // Uncomment following line to make a border.
