@@ -1,6 +1,7 @@
 var player_md;
 
 class Player {
+  body: any;
   speed: number = 2.0;
   width:  number = 32;
   height: number = 32;
@@ -14,7 +15,7 @@ class Player {
   stageWidth: number;
   stageHeight: number;
 
-  constructor(graphicsDevice, mathDevice, canvasX, canvasY) {
+  constructor(graphicsDevice, phys2D, mathDevice, canvasX, canvasY) {
     player_md = mathDevice;
     this.sprite = Draw2DSprite.create({
         width:  this.width,
@@ -23,6 +24,10 @@ class Player {
         x:      this.getSpriteX(),
         y:      this.getSpriteY(),
         color: [1.0, 1.0, 1.0, 1.0],
+    });
+    this.body = phys2D.createRigidBody({
+      type: 'dynamic', 
+      position: this.getPosition()
     });
     this.stageWidth = canvasX;
     this.stageHeight = canvasY;
@@ -35,6 +40,14 @@ class Player {
   
   private getSpriteY() {
     return -1 * this.pos_x + 2 * this.pos_y;
+  }
+
+  public getRigidBody() {
+    return this.body;
+  }
+
+  public getPosition(){
+    return [this.pos_x, this.pos_y];
   }
 
   loadTexture(graphicsDevice) {

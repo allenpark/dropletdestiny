@@ -8,16 +8,23 @@ class Field {
   speed: number;
   gd: GraphicsDevice;
   md: MathDevice;
-  
-  constructor(graphicsDevice, mathDevice, canvasX, canvasY, droplets, obstacles) {
+  pd: Physics2DDevice;
+  world: Physics2DWorld;
+
+  constructor(graphicsDevice, mathDevice, phys2D, canvasX, canvasY, droplets, obstacles, world) {
     //droplet_md = mathDevice;
     this.gd = graphicsDevice;
     this.md = mathDevice;
+    this.pd = phys2D;
     this.droplets = droplets;
     this.obstacles = obstacles;
     this.stageWidth = canvasX;
     this.stageHeight = canvasY;
-    this.speed = 2.0
+    this.speed = 0.1
+    this.world = world;
+    for(var i = 0; i < droplets.length; i++){
+       this.world.addRigidBody(this.droplets[i].getRigidBody())
+    }
   }
 
   private isInBounds(object){
@@ -50,7 +57,10 @@ class Field {
         this.obstacles.splice(i,1)
       }
     }
-    this.droplets.push(new Droplet(this.gd, this.md, /*sprite,*/ 100, 200, 5, this.speed))
-    console.log(this.droplets.length)
+
+    //var droplet = new Droplet(this.gd, this.md, this.pd, /*sprite,*/ 100, 200, 5, this.speed);
+    //this.droplets.push(droplet)
+    //this.world.addRigidBody(droplet.getRigidBody())
+    //console.log(this.droplets.length)
   }
 }

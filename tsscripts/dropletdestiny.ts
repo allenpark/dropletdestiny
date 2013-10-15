@@ -75,9 +75,9 @@ TurbulenzEngine.onload = function onloadFn()
 
     inputDevice.addEventListener('keyup', handleKeyUp)
 
-    var field = new Field(graphicsDevice, md, stageWidth, stageHeight, [new Droplet(graphicsDevice, md, 50, 50, 5, 2.0)], [new Obstacle(graphicsDevice, md, 100, 100, -50, 2.0)]);
-    var protagonist = new Player(graphicsDevice, md, stageWidth, stageHeight);
-	
+    var field = new Field(graphicsDevice, md, phys2D, stageWidth, stageHeight, [new Droplet(graphicsDevice, md, phys2D, 100, 200, 5, .01)], [new Obstacle(graphicsDevice, md, 100, 100, -50, 2.0)], world);
+    var protagonist = new Player(graphicsDevice, phys2D, md, stageWidth, stageHeight);
+	world.addRigidBody(protagonist.getRigidBody());
 	var bgSprites = []
 	for (var i = 0; i < 100; i++) {
 		bgSprites[i] = new Background(graphicsDevice, md, stageWidth, stageHeight, 150 + Math.random()*100, 300 + Math.random()*1000);
@@ -98,10 +98,48 @@ TurbulenzEngine.onload = function onloadFn()
 
             // Moves the player.
             protagonist.update(keyCodes);
+
+            //Update position of rigid body associated with player
+            protagonist.getRigidBody().setPosition(protagonist.getPosition());
             // Moves the droplets and obstacles.
             field.update(0);
             
             // TODO: check for collisions.
+            //console.log("About to check collisions");
+            //var length = world.rigidBodies.length;
+            //var playerPosition = protagonist.getRigidBody().getPosition();
+            //console.log("Num rigid bodies" + length);
+            //console.log("Position of rigid body " + playerPosition[0] + ", " + playerPosition[1]);
+            var arbiters = world.staticArbiters;
+            for (var i = 0, nArbs = arbiters.length; i < nArbs; i++){
+                var arb = arbiters[i];
+                console.log("We're in this loop");
+                if(!arb.active){
+                    continue;
+                }
+                //TODO: What happens when player hits droplet?
+                //Testing to see if collisions are detected
+                if(arb.bodyA.isDynamic && arb.bodyB.isDynamic){
+                    //world.removeRigidBody(arb.bodyA);
+                    console.log("Collisions!");
+                }
+
+                else if(arb.bodyA.isDynamic){
+                    if(arb.bodyB.isKinematic){
+                        console.log("Collisions!!");
+                        continue;
+                    }
+                }
+
+                else if(arb.bodyB.isKinematic){
+                    if(arb.bodyA.isDynamic){
+                        console.log("Collisions!!!");
+                        continue;
+                    }
+                }
+
+
+            }
 
             //DRAWS EVERYTHING
             // additive makes dark colors transparent...
@@ -112,7 +150,7 @@ TurbulenzEngine.onload = function onloadFn()
 				bgSprites[i].draw(draw2D);
 			}
 			
-            //field.draw(draw2D);
+            field.draw(draw2D);
 			protagonist.draw(draw2D);
 			
             for (var i = 0; i < 4; i++) {
