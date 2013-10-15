@@ -14,6 +14,7 @@ class Player {
   stageWidth: number;
   stageHeight: number;
   size:   number = 1;
+  
 
   constructor(graphicsDevice, mathDevice, canvasX, canvasY) {
     player_md = mathDevice;
