@@ -20,11 +20,13 @@ class Field {
     this.obstacles = obstacles;
     this.stageWidth = canvasX;
     this.stageHeight = canvasY;
+
     this.speed = 0.1
     this.world = world;
     for(var i = 0; i < droplets.length; i++){
        this.world.addRigidBody(this.droplets[i].getRigidBody())
     }
+
   }
 
   private isInBounds(object){
@@ -43,18 +45,26 @@ class Field {
     }
   }
 
+ // addDroplet() {
+ //   this.droplets.push(new Droplet(this.gd, this.md, Math.random()*100, 350, 5, this.speed));
+//}
+
+  addObstacle() {
+    this.obstacles.push(new Obstacle(this.gd, this.md, Math.random()*100, 350, -50, this.speed));
+  }
+
   update(time) {
     //update object positions and remove those that are out of bounds
     for (var i = this.droplets.length - 1; i >= 0; i--) {
       this.droplets[i].updatePosition(time);
       if (!this.isInBounds(this.droplets[i])){
-        this.droplets.splice(i,1)
+        this.droplets.splice(i,1);
       }
     }
     for (var i = this.obstacles.length - 1; i >= 0; i--) {
       this.obstacles[i].updatePosition(time);
       if (!this.isInBounds(this.obstacles[i])){
-        this.obstacles.splice(i,1)
+        this.obstacles.splice(i,1);
       }
     }
 
@@ -62,5 +72,13 @@ class Field {
     //this.droplets.push(droplet)
     //this.world.addRigidBody(droplet.getRigidBody())
     //console.log(this.droplets.length)
+
+    //if (time % 32 == 0) {
+    //  this.addObstacle();
+    //}
+    //if (time % 60 == 0) {
+    //  this.addDroplet();
+    //}
+
   }
 }

@@ -27,11 +27,13 @@
 /// <reference path="field.ts" />
 /// <reference path="droplet.ts" />
 /// <reference path="obstacle.ts" />
+/// <reference path="imageSprite.ts" />
 /// <reference path="background.ts" />
 
 
 TurbulenzEngine.onload = function onloadFn()
 {
+
     var intervalID;
     var isOver = false;
 
@@ -75,14 +77,29 @@ TurbulenzEngine.onload = function onloadFn()
 
     inputDevice.addEventListener('keyup', handleKeyUp)
 
+
     var field = new Field(graphicsDevice, md, phys2D, stageWidth, stageHeight, [new Droplet(graphicsDevice, md, phys2D, 100, 200, 5, .01)], [new Obstacle(graphicsDevice, md, 100, 100, -50, 2.0)], world);
     var protagonist = new Player(graphicsDevice, phys2D, md, stageWidth, stageHeight);
 	world.addRigidBody(protagonist.getRigidBody());
+
+	//Instatiates all the background sprites!!
 	var bgSprites = []
 	for (var i = 0; i < 100; i++) {
-		bgSprites[i] = new Background(graphicsDevice, md, stageWidth, stageHeight, 150 + Math.random()*100, 300 + Math.random()*1000);
+		bgSprites[i] = new imageSprite(graphicsDevice, md, stageWidth, stageHeight, 150 + Math.random()*100, 300 + Math.random()*1000, 32, 32);
 		bgSprites[i].setSpeed(Math.random()*5);
 	}
+	
+	for (var i = 100; i < 120; i++) {
+		bgSprites[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, 0, 300 + Math.random()*10000, 100, 100);
+		bgSprites[i].setSpeed(3);
+	}
+	
+	for (var i = 120; i < 140; i++) {
+		bgSprites[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, 110, 300 + Math.random()*10000, 100, 100);
+		bgSprites[i].setSpeed(3);
+	}
+	
+	bgSprites[0] = new Background(graphicsDevice, md, stageWidth, stageHeight, 0, 0, 640, 540);
 	
     var keyCodes = [];
 
@@ -102,7 +119,7 @@ TurbulenzEngine.onload = function onloadFn()
             //Update position of rigid body associated with player
             protagonist.getRigidBody().setPosition(protagonist.getPosition());
             // Moves the droplets and obstacles.
-            field.update(0);
+            field.update(world.timeStamp);
             
             // TODO: check for collisions.
             //console.log("About to check collisions");
