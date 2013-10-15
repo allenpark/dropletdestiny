@@ -99,7 +99,7 @@ TurbulenzEngine.onload = function onloadFn()
             // Moves the player.
             protagonist.update(keyCodes);
             // Moves the droplets and obstacles.
-            field.update(0);
+            field.update(world.timeStamp);
             
             // TODO: check for collisions.
 
@@ -112,7 +112,7 @@ TurbulenzEngine.onload = function onloadFn()
 				bgSprites[i].draw(draw2D);
 			}
 			
-            //field.draw(draw2D);
+            field.draw(draw2D);
 			protagonist.draw(draw2D);
 			
             for (var i = 0; i < 4; i++) {
