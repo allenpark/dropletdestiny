@@ -13,6 +13,7 @@ class Player {
   max_y:  number = 500;
   stageWidth: number;
   stageHeight: number;
+  size:   number = 1;
 
   constructor(graphicsDevice, mathDevice, canvasX, canvasY) {
     player_md = mathDevice;

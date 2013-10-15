@@ -27,11 +27,13 @@
 /// <reference path="field.ts" />
 /// <reference path="droplet.ts" />
 /// <reference path="obstacle.ts" />
+/// <reference path="imageSprite.ts" />
 /// <reference path="background.ts" />
 
 
 TurbulenzEngine.onload = function onloadFn()
 {
+
     var intervalID;
     var isOver = false;
 
@@ -80,9 +82,11 @@ TurbulenzEngine.onload = function onloadFn()
 	
 	var bgSprites = []
 	for (var i = 0; i < 100; i++) {
-		bgSprites[i] = new Background(graphicsDevice, md, stageWidth, stageHeight, 150 + Math.random()*100, 300 + Math.random()*1000);
+		bgSprites[i] = new imageSprite(graphicsDevice, md, stageWidth, stageHeight, 150 + Math.random()*100, 300 + Math.random()*1000, 32, 32);
 		bgSprites[i].setSpeed(Math.random()*5);
 	}
+	
+	bgSprites[0] = new Background(graphicsDevice, md, stageWidth, stageHeight, 0, 0, 640, 540);
 	
     var keyCodes = [];
 
