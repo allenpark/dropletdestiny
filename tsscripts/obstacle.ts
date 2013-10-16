@@ -50,8 +50,19 @@ class Obstacle {
     return [this.x, this.y];
   }
   loadTexture(graphicsDevice) {
+    var choice = Math.random();
+    var imagefile;
+    if (choice < (1.0/3.0)) {
+      imagefile = "assets/textures/shrub1.png";
+    }
+    else if (choice < (2.0/3.0)) {
+      imagefile = "assets/textures/twig1.png";
+    }
+    else {
+      imagefile = "assets/textures/twig2.png";
+    }
     graphicsDevice.createTexture({
-      src: "assets/textures/brick.png",
+      src: imagefile,
       mipmaps: true,
       onload: function (texture) {
         if (texture) {

@@ -62,7 +62,7 @@ class Shrub extends imageSprite{
 class Cloud1 extends imageSprite{
     loadTexture(graphicsDevice, bg) {
     this.texture = graphicsDevice.createTexture({
-      src: "assets/textures/cloud1.png",
+      src: "assets/textures/cloud1-small.png",
       mipmaps: true,
       onload: function (texture) {
         if (texture) {
@@ -77,7 +77,7 @@ class Cloud1 extends imageSprite{
 class Cloud2 extends imageSprite{
     loadTexture(graphicsDevice, bg) {
     this.texture = graphicsDevice.createTexture({
-      src: "assets/textures/cloud2.png",
+      src: "assets/textures/cloud2-small.png",
       mipmaps: true,
       onload: function (texture) {
         if (texture) {

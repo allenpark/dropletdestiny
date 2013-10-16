@@ -79,8 +79,10 @@ TurbulenzEngine.onload = function onloadFn() {
     var field;
     var protagonist;
     var bgSprites = [];
+    var trees = [];
     var keyCodes;
     var trail;
+    var playerSpeed;
     var PSpeed;
 
     document.getElementById("mainMenu").className = "";
@@ -111,7 +113,14 @@ TurbulenzEngine.onload = function onloadFn() {
             //Update position of rigid body associated with player
             protagonist.getRigidBody().setPosition(protagonist.getPosition());
             // Moves the droplets and obstacles.
-            field.update(world.timeStamp);
+            playerSpeed = 1.0 + (trail.length)*.25;
+            field.setSpeed(playerSpeed);
+            PSpeed = .1 * (playerSpeed);
+            field.update(world.timeStamp, draw2D);
+
+            if (world.timeStamp % 4 == 0) {
+              trees.push(new Tree(graphicsDevice, md, stageWidth, stageHeight, -1*(Math.random()*100) - 25, 300, 100, 100));
+            }
 
             // TODO: check for collisions.
             //console.log("About to check collisions");
@@ -141,6 +150,7 @@ TurbulenzEngine.onload = function onloadFn() {
                         var id = arb.bodyB.userData;
                         if(id == "obstacle"){
                             isOver = true;
+                            score = trail.length;
                         }
                         else{
                         world.removeRigidBody(arb.bodyB);
@@ -158,6 +168,7 @@ TurbulenzEngine.onload = function onloadFn() {
                         var id = arb.bodyA.userData;
                         if(id == "obstacle"){
                             isOver = true;
+                            score = trail.length;
                         }
                         else{
                         world.removeRigidBody(arb.bodyA);
@@ -174,10 +185,34 @@ TurbulenzEngine.onload = function onloadFn() {
             // additive makes dark colors transparent...
             draw2D.begin('alpha');
 
+            bgSprites[1].setSpeed(.03*PSpeed);
+            bgSprites[2].setSpeed(.06*PSpeed);
+            bgSprites[3].setSpeed(.1*PSpeed);
+            bgSprites[4].setSpeed(.3*PSpeed);
+            bgSprites[5].setSpeed(.33*PSpeed);
+        
+            //Clouds
+            for (var i = 6; i < 30; i++) {
+                bgSprites[i].setSpeed((Math.random()*.1 + .1)*PSpeed);
+            }
+        
+            for (var i = 30; i < 50; i++) {
+                bgSprites[i].setSpeed((Math.random()*.2 + .5)*PSpeed);
+            }
+
             //rendering background
             for (var i = 0; i < bgSprites.length; i++) {
                 bgSprites[i].draw(draw2D);
             }
+
+            for (var i = 0; i < trees.length; i++) {
+                trees[i].setSpeed(playerSpeed);
+                trees[i].draw(draw2D);
+                if (!trees[i].inCanvasY()) {
+                  trees.splice(i,1);
+                }
+            }
+
 
             field.draw(draw2D);
 
@@ -192,8 +227,8 @@ TurbulenzEngine.onload = function onloadFn() {
 
             // Drawing the polygon border.
             ctx.beginFrame(graphicsDevice, [0, 0, canvas.width, canvas.height]);
-            var borderPoints = [[0, 0], [0, protagonist.height], [(canvas.height - protagonist.height) / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0 + canvas.height / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0, 0]];
-            var point = borderPoints[0];
+            //var borderPoints = [[0, 0], [0, protagonist.height], [(canvas.height - protagonist.height) / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0 + canvas.height / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0, 0]];
+            //var point = borderPoints[0];
             var yPosition = protagonist.getPosition()[1];
             for(var i = 0; i < trail.length; i++){
                 ctx.save();
@@ -201,24 +236,24 @@ TurbulenzEngine.onload = function onloadFn() {
                 ctx.arc(2 * trail[i] + yPosition + 16, -trail[i] + 2 * yPosition + 16, 16, 0, 2*Math.PI, false);
                 ctx.closePath();
                 yPosition-= 3;
-                ctx.fillStyle = "#0056FF";
+                ctx.fillStyle = "#42C2E9";
                 ctx.fill();
                 ctx.restore();
             }
 
-            ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(point[0], point[1]);
-            for (i = 1; i < borderPoints.length; i += 1) {
-                point = borderPoints[i];
-                ctx.lineTo(point[0], point[1]);
-            }
-            ctx.closePath();
-            //ctx.fillStyle = '#00F';
-            //ctx.fill();
-            ctx.strokeStyle = '#FFF';
-            ctx.stroke();
-            ctx.restore();
+            //ctx.save();
+            //ctx.beginPath();
+            //ctx.moveTo(point[0], point[1]);
+            //for (i = 1; i < borderPoints.length; i += 1) {
+            //    point = borderPoints[i];
+            //    ctx.lineTo(point[0], point[1]);
+            //}
+            //ctx.closePath();
+            ////ctx.fillStyle = '#00F';
+            ////ctx.fill();
+            //ctx.strokeStyle = '#FFF';
+            //ctx.stroke();
+            //ctx.restore();
             ctx.endFrame();
 
             draw2D.begin('alpha');
@@ -312,6 +347,7 @@ TurbulenzEngine.onload = function onloadFn() {
         isOver = false;
         score = 0;
         trail = [];
+        trees = [];
 
         stageWidth = canvas.width;
         stageHeight = canvas.height;
@@ -383,15 +419,15 @@ TurbulenzEngine.onload = function onloadFn() {
         bgSprites[50] = new MountainSide(graphicsDevice, md, stageWidth, stageHeight, 0, 0, 640, 540);
         
         //Trees
-        for (var i = 51; i < 70; i++) {
-            bgSprites[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, 0, 300 + Math.random()*10000, 100, 100);
-            bgSprites[i].setSpeed(7*PSpeed);
+        for (var i = 0; i < 50; i++) {
+            trees[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, -1*(Math.random()*100) - 25, 50 + (1200)*Math.random(), 100, 100);
+            trees[i].setSpeed(playerSpeed);
         }
         
-        for (var i = 70; i < 100; i++) {
-            bgSprites[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, 100, 300 + Math.random()*10000, 100, 100);
-            bgSprites[i].setSpeed(7*PSpeed);
-        }
+//        for (var i = 70; i < 100; i++) {
+//            bgSprites[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, 100, 300 + Math.random()*10000, 100, 100);
+//            bgSprites[i].setSpeed(7*PSpeed);
+//        }
         keyCodes = [];
     }
 

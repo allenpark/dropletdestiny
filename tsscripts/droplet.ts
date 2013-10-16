@@ -54,7 +54,7 @@ class Droplet {
 
   loadTexture(graphicsDevice) {
     graphicsDevice.createTexture({
-      src: "assets/textures/cross.png",
+      src: "assets/textures/particle.png",
       mipmaps: true,
       onload: function (texture) {
         if (texture) {
