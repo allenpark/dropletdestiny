@@ -12,6 +12,11 @@ class Player {
   min_y:  number = 0;
   max_x:  number = 100;
   max_y:  number = 500;
+  last_x_direction_moved: number = 1;
+  x_oscillate: number = 0;
+  default_oscillate_step: number = 1.0;
+  oscillate_step: number = 1.0; // should be same as default_oscillate_step
+  max_oscillate: number = 5.0;
   stageWidth: number;
   stageHeight: number;
   size:   number = 1;
@@ -75,6 +80,7 @@ class Player {
   }
 
   update(keys) {
+    var formerX = this.pos_x;
     for (var i = 0; i < keys.length; i++) {
       var key = keys[i];
       // TODO: support sliding down a side so movements partially into a wall don't get completely undone
@@ -109,6 +115,24 @@ class Player {
           break;
       }
     }
+    /*if (this.pos_x == formerX) {
+      // put in waviness
+      if (this.last_x_direction_moved != 0) {
+        this.oscillate_step = this.oscillate_step * this.last_x_direction_moved;
+        this.last_x_direction_moved = 0;
+      }
+      this.pos_x += this.oscillate_step;
+      this.x_oscillate += this.oscillate_step;
+      if (!this.inRangeX(this.pos_x) || this.oscillate_step * this.x_oscillate > Math.abs(this.oscillate_step * this.max_oscillate)) {
+        this.pos_x -= this.oscillate_step * 2;
+        this.x_oscillate -= this.oscillate_step * 2;
+        this.oscillate_step *= -1;
+      }
+    } else {
+      this.x_oscillate = 0;
+      this.oscillate_step = this.default_oscillate_step;
+      this.last_x_direction_moved = (this.pos_x - formerX) / Math.abs(this.pos_x - formerX);
+    }*/
   }
   
   inRangeX(x) {
