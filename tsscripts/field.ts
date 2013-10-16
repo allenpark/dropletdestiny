@@ -8,16 +8,30 @@ class Field {
   speed: number;
   gd: GraphicsDevice;
   md: MathDevice;
-  
-  constructor(graphicsDevice, mathDevice, canvasX, canvasY, droplets, obstacles) {
+  pd: Physics2DDevice;
+  world: Physics2DWorld;
+  id: number = 0;
+
+  constructor(graphicsDevice, mathDevice, phys2D, canvasX, canvasY, droplets, obstacles, world) {
     //droplet_md = mathDevice;
     this.gd = graphicsDevice;
     this.md = mathDevice;
+    this.pd = phys2D;
     this.droplets = droplets;
     this.obstacles = obstacles;
     this.stageWidth = canvasX;
     this.stageHeight = canvasY;
-    this.speed = 1.0
+
+    this.speed = 1.0;
+    this.world = world;
+    for(var i = 0; i < droplets.length; i++){
+       this.world.addRigidBody(this.droplets[i].getRigidBody())
+    }
+
+    for(var i = 0; i < obstacles.length; i++){
+       this.world.addRigidBody(this.obstacles[i].getRigidBody())
+    }
+
   }
 
   private isInBounds(object){
@@ -36,12 +50,24 @@ class Field {
     }
   }
 
-  addDroplet() {
-    this.droplets.push(new Droplet(this.gd, this.md, Math.random()*100, 350, 5, this.speed));
-  }
+  addDroplet(time) {
+    this.droplets.push(new Droplet(this.gd, this.md, this.pd, Math.random()*100, 350, 5, this.speed, time));
+    this.world.addRigidBody(this.droplets[this.droplets.length-1].getRigidBody());
+
+ }
+
+ removeDroplet(id){
+    for (var i = 0; i < this.droplets.length; i++){
+      if(this.droplets[i].id == id){
+        this.droplets.splice(i,1);
+        break;
+      }
+    }
+ }
 
   addObstacle() {
-    this.obstacles.push(new Obstacle(this.gd, this.md, Math.random()*100, 350, -50, this.speed));
+    this.obstacles.push(new Obstacle(this.gd, this.md, this.pd, Math.random()*100, 350, -50, this.speed));
+    this.world.addRigidBody(this.obstacles[this.obstacles.length-1].getRigidBody());
   }
 
   update(time) {
@@ -58,11 +84,19 @@ class Field {
         this.obstacles.splice(i,1);
       }
     }
-    if (time % 32 == 0) {
+
+    //var droplet = new Droplet(this.gd, this.md, this.pd, /*sprite,*/ 100, 200, 5, this.speed);
+    //this.droplets.push(droplet)
+    //this.world.addRigidBody(droplet.getRigidBody())
+    //console.log(this.droplets.length)
+
+    if (time % 80 == 0) {
       this.addObstacle();
     }
-    //if (time % 60 == 0) {
-    //  this.addDroplet();
-    //}
+
+    if (time % 60 == 0) {
+      this.addDroplet(time);
+    }
+
   }
 }

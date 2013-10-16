@@ -80,9 +80,11 @@ TurbulenzEngine.onload = function onloadFn() {
     var protagonist;
     var bgSprites = [];
     var keyCodes;
+    var trail;
 
     document.getElementById("mainMenu").className = "";
     intervalID = TurbulenzEngine.setInterval(menuUpdate, 1000 / 60);
+
 
     function menuUpdate() {
         var canvasBox = md.v4Build(0, 0, canvas.width, canvas.height);
@@ -104,10 +106,68 @@ TurbulenzEngine.onload = function onloadFn() {
 
             // Moves the player.
             protagonist.update(keyCodes);
+
+            //Update position of rigid body associated with player
+            protagonist.getRigidBody().setPosition(protagonist.getPosition());
             // Moves the droplets and obstacles.
             field.update(world.timeStamp);
 
             // TODO: check for collisions.
+            //console.log("About to check collisions");
+            //var length = world.rigidBodies.length;
+            //var playerPosition = protagonist.getRigidBody().getPosition();
+            //console.log("Num rigid bodies" + length);
+            //console.log("Position of rigid body " + playerPosition[0] + ", " + playerPosition[1]);
+            var arbiters = world.staticArbiters;
+            for (var i = 0, nArbs = arbiters.length; i < nArbs; i++){
+                var arb = arbiters[i];
+                //console.log("We're in this loop");
+                if(!arb.active){
+                    continue;
+                }
+                //TODO: What happens when player hits droplet?
+                //Testing to see if collisions are detected
+                if(arb.bodyA.isDynamic() && arb.bodyB.isDynamic()){
+                    //world.removeRigidBody(arb.bodyA);
+                    //console.log("Collisions!");
+                }
+
+                else if(arb.bodyA.isDynamic()){
+                    if(arb.bodyB.isKinematic()){
+                        //console.log("Collisions!!");
+                        //Remove Droplet rigid body from world
+                        
+                        var id = arb.bodyB.userData;
+                        if(id == "obstacle"){
+                            trail = [];
+                        }
+                        else{
+                        world.removeRigidBody(arb.bodyB);
+                        //Remove Droplet sprite from world
+                        field.removeDroplet(id);
+                        trail.push([0]);
+                        }
+                    }
+                }
+
+                else if(arb.bodyB.isDynamic()){
+                    if(arb.bodyA.isKinematic()){
+                        //console.log("Collisions!!!");
+                        //Remove Droplet rigid body from world
+                        var id = arb.bodyA.userData;
+                        if(id == "obstacle"){
+                            trail = [];
+                        }
+                        else{
+                        world.removeRigidBody(arb.bodyA);
+                        //Remove Droplet sprite from world
+                        field.removeDroplet(id);
+                        trail.push([0])
+                        //Add new position to player droplet list
+                        }
+                    }
+                }
+            }
 
             //DRAWS EVERYTHING
             // additive makes dark colors transparent...
@@ -119,7 +179,9 @@ TurbulenzEngine.onload = function onloadFn() {
             }
 
             field.draw(draw2D);
-            protagonist.draw(draw2D);
+
+            trail.unshift(protagonist.getPosition()[0]);
+            trail.pop();
 
             for (var i = 0; i < 4; i++) {
                 // Uncomment following line to make a border.
@@ -131,6 +193,18 @@ TurbulenzEngine.onload = function onloadFn() {
             ctx.beginFrame(graphicsDevice, [0, 0, canvas.width, canvas.height]);
             var borderPoints = [[0, 0], [0, protagonist.height], [(canvas.height - protagonist.height) / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0 + canvas.height / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0, 0]];
             var point = borderPoints[0];
+            var yPosition = protagonist.getPosition()[1];
+            for(var i = 0; i < trail.length; i++){
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(2 * trail[i] + yPosition + 16, -trail[i] + 2 * yPosition + 16, 16, 0, 2*Math.PI, false);
+                ctx.closePath();
+                yPosition-= 3;
+                ctx.fillStyle = "#0056FF";
+                ctx.fill();
+                ctx.restore();
+            }
+
             ctx.save();
             ctx.beginPath();
             ctx.moveTo(point[0], point[1]);
@@ -145,6 +219,10 @@ TurbulenzEngine.onload = function onloadFn() {
             ctx.stroke();
             ctx.restore();
             ctx.endFrame();
+
+            draw2D.begin('alpha');
+            protagonist.draw(draw2D);
+            draw2D.end();
 
             graphicsDevice.endFrame();
 
@@ -232,6 +310,7 @@ TurbulenzEngine.onload = function onloadFn() {
 
         isOver = false;
         score = 0;
+        trail = [];
 
         stageWidth = canvas.width;
         stageHeight = canvas.height;
@@ -262,6 +341,7 @@ TurbulenzEngine.onload = function onloadFn() {
 
         field = new Field(graphicsDevice, md, stageWidth, stageHeight, [new Droplet(graphicsDevice, md, 50, 50, 5, 2.0)], [new Obstacle(graphicsDevice, md, 100, 100, -50, 2.0)]);
         protagonist = new Player(graphicsDevice, md, stageWidth, stageHeight);
+	    world.addRigidBody(protagonist.getRigidBody());
 
         bgSprites = []
 	for (var i = 0; i < 100; i++) {
