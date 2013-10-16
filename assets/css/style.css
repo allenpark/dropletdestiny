@@ -3,7 +3,72 @@ body {
 }
 
 #engine {
+    position: relative;
     width: 640px;
     height: 540px;
     margin: 0 auto;
+}
+
+#mainMenu {
+    position: absolute;
+    left: 220px;
+    top: 180px;
+    text-align: center;
+    color: white;
+}
+
+    #playButtonM:hover {
+        color: green;
+    }
+
+    #creditsButtonM:hover {
+        color: green;
+    }
+
+#creditsMenu {
+    position: absolute;
+    left: 290px;
+    top: 100px;
+    text-align: center;
+    color: white;
+}
+
+    #mainMenuButtonC:hover {
+        color: green;
+    }
+
+#pauseMenu {
+    position: absolute;
+    left: 270px;
+    top: 180px;
+    text-align: center;
+    color: white;
+}
+
+    #resumeButtonP:hover {
+        color: green;
+    }
+
+    #quitButtonP:hover {
+        color: green;
+    }
+
+#gameOverMenu {
+    position: absolute;
+    left: 250px;
+    top: 180px;
+    text-align: center;
+    color: white;
+}
+
+    #replayButtonGO:hover {
+        color: green;
+    }
+
+    #mainMenuButtonGO:hover {
+        color: green;
+    }
+
+.hidden {
+    display: none;
 }

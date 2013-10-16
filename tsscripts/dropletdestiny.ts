@@ -33,67 +33,73 @@
 TurbulenzEngine.onload = function onloadFn()
 {
     var intervalID;
-    var isOver = false;
+    var isOver;
 
-    var graphicsDevice = TurbulenzEngine.createGraphicsDevice({});
+    var graphicsDevice;
     var inputDevice = TurbulenzEngine.createInputDevice({});
-    var md = TurbulenzEngine.createMathDevice({});
-    var phys2D = Physics2DDevice.create();
+    var md;
+    var phys2D;
 
-    var canvasElem = TurbulenzEngine.canvas;
-    var canvas = Canvas.create(graphicsDevice, md);
-    var ctx = canvas.getContext('2d');
+    graphicsDevice = TurbulenzEngine.createGraphicsDevice({});
+    md = TurbulenzEngine.createMathDevice({});
+    phys2D = Physics2DDevice.create();
 
-    var stageWidth  = canvas.width;
-    var stageHeight = canvas.height;
+    var canvasElem;
+    var canvas;
+    var ctx;
 
-    var draw2D = Draw2D.create({
-        graphicsDevice: graphicsDevice,
-        viewportRectangle: [0,0, stageWidth, stageHeight],
-        scaleMode: 'scale'
-    });
+    canvasElem = TurbulenzEngine.canvas;
+    canvas = Canvas.create(graphicsDevice, md);
+    ctx = canvas.getContext('2d');
 
-    var mainMaterial = phys2D.createMaterial({
-        elasticity: 0,
-    });
+    var stageWidth;
+    var stageHeight;
 
-    var world = phys2D.createWorld({
-        gravity : [0, 0],
-        velocityIterations : 8,
-        positionIterations : 8
-    });
-
-    var borderThickness = 1;
-    var borders =  []
-    var borderColor = [1.0, 0.0, 0.0, 1.0];
-    borders.push({color: borderColor, destinationRectangle: [0, 0, borderThickness, stageHeight]});
-    borders.push({color: borderColor, destinationRectangle: [0, 0, stageWidth, borderThickness]});
-    borders.push({color: borderColor, destinationRectangle: [(stageWidth - borderThickness), 0, stageWidth, stageHeight]});
-    borders.push({color: borderColor, destinationRectangle: [0, (stageHeight - borderThickness), stageWidth, stageHeight]});
+    var clearColor = [0.0, 0.3, 1.0, 1.0];
+    var draw2D;
+    var mainMaterial;
+    var world;
+    var borderThickness;
+    var borders = [];
+    var borderColor;
+    var score;
 
     inputDevice.addEventListener('keydown', handleKeyDown);
+    inputDevice.addEventListener('keyup', handleKeyUp);
 
-    inputDevice.addEventListener('keyup', handleKeyUp)
+    document.getElementById("playButtonM").addEventListener("click", handlePlayButtonM);
+    document.getElementById("creditsButtonM").addEventListener("click", handleCreditsButtonM);
+    document.getElementById("mainMenuButtonC").addEventListener("click", handleMainMenuButtonC);
+    document.getElementById("resumeButtonP").addEventListener("click", handleResumeButtonP);
+    document.getElementById("quitButtonP").addEventListener("click", handleQuitButtonP);
+    document.getElementById("replayButtonGO").addEventListener("click", handleReplayButtonGO);
+    document.getElementById("mainMenuButtonGO").addEventListener("click", handleMainMenuButtonGO);
 
-    var field = new Field(graphicsDevice, md, stageWidth, stageHeight, [new Droplet(graphicsDevice, md, 50, 50, 5, 2.0)], [new Obstacle(graphicsDevice, md, 100, 100, -50, 2.0)]);
-    var protagonist = new Player(graphicsDevice, md, stageWidth, stageHeight);
-	
-	var bgSprites = []
-	for (var i = 0; i < 100; i++) {
-		bgSprites[i] = new Background(graphicsDevice, md, stageWidth, stageHeight, 150 + Math.random()*100, 300 + Math.random()*1000);
-		bgSprites[i].setSpeed(Math.random()*5);
-	}
-	
-    var keyCodes = [];
+    var field;
+    var protagonist;
+    var bgSprites = [];
+    var keyCodes;
 
-    function update() {
+    document.getElementById("mainMenu").className = "";
+    intervalID = TurbulenzEngine.setInterval(menuUpdate, 1000 / 60);
+
+    function menuUpdate() {
+        var canvasBox = md.v4Build(0, 0, canvas.width, canvas.height);
+
+        if (graphicsDevice.beginFrame()) {
+            graphicsDevice.clear(clearColor, 1.0);
+            graphicsDevice.endFrame();
+        }
+    }
+
+    function gameUpdate() {
         /* Update code goes here */
 
         var canvasBox = md.v4Build(0,0, canvas.width, canvas.height);
     
         if (graphicsDevice.beginFrame())
         {
-            //graphicsDevice.clear([1.0, 0.5, 0.25, 1.0], 1.0);
+            graphicsDevice.clear([0.0, 0.0, 0.0, 1.0], 1.0);
             world.step(1.0/60);
 
             // Moves the player.
@@ -141,12 +147,24 @@ TurbulenzEngine.onload = function onloadFn()
             ctx.endFrame();
 
             graphicsDevice.endFrame();
+
+            if (isOver) {
+                endGame();
+            }
         }
     }
 
     function handleKeyDown(e) {
         var index = keyCodes.indexOf(e);
-        if (index > -1) {
+        // pause the game if p is pressed
+        if (e == inputDevice.keyCodes.P) {
+            document.getElementById("pauseMenu").className = "";
+            TurbulenzEngine.clearInterval(intervalID);
+            intervalID = TurbulenzEngine.setInterval(menuUpdate, 1000 / 60);
+
+            clearColor = [0.3, 0.3, 0.3, 1];
+
+        } else if (index > -1) {
             console.log('Error: adding existing key ' + e + ' to keyCodes.');
         }
         keyCodes.push(e);
@@ -161,10 +179,104 @@ TurbulenzEngine.onload = function onloadFn()
         }
     }
 
-    restartGame();
+    function handlePlayButtonM(e) {
+        document.getElementById("mainMenu").className = "hidden";
+        startGame();
+    }
 
-    function restartGame() {
-      intervalID = TurbulenzEngine.setInterval(update, 1000 / 60);
-      isOver = false;
+    function handleCreditsButtonM() {
+        document.getElementById("mainMenu").className = "hidden";
+        document.getElementById("creditsMenu").className = "";
+    }
+
+    function handleMainMenuButtonC() {
+        document.getElementById("creditsMenu").className = "hidden";
+        document.getElementById("mainMenu").className = "";
+    }
+
+    function handleResumeButtonP() {
+        document.getElementById("pauseMenu").className = "hidden";
+        TurbulenzEngine.clearInterval(intervalID);
+        intervalID = TurbulenzEngine.setInterval(gameUpdate, 1000 / 60);
+        document.getElementById("turbulenz_game_engine_canvas").focus();
+    }
+
+    function handleQuitButtonP() {
+        document.getElementById("pauseMenu").className = "hidden";
+        document.getElementById("mainMenu").className = "";
+        startMenu();
+        clearColor = [0.0, 0.3, 1.0, 1.0];
+    }
+
+    function handleReplayButtonGO() {
+        document.getElementById("gameOverMenu").className = "hidden";
+        startGame();
+    }
+
+    function handleMainMenuButtonGO() {
+        document.getElementById("gameOverMenu").className = "hidden";
+        document.getElementById("mainMenu").className = "";
+        startMenu();
+        clearColor = [0.0, 0.3, 1.0, 1.0];
+    }
+
+    function startMenu() {
+        TurbulenzEngine.clearInterval(intervalID);
+        intervalID = TurbulenzEngine.setInterval(menuUpdate, 1000 / 60);
+    }
+
+    function startGame() {
+        TurbulenzEngine.clearInterval(intervalID);
+        intervalID = TurbulenzEngine.setInterval(gameUpdate, 1000 / 60);
+        document.getElementById("turbulenz_game_engine_canvas").focus();
+
+        isOver = false;
+        score = 0;
+
+        stageWidth = canvas.width;
+        stageHeight = canvas.height;
+
+        draw2D = Draw2D.create({
+            graphicsDevice: graphicsDevice,
+            viewportRectangle: [0, 0, stageWidth, stageHeight],
+            scaleMode: 'scale'
+        });
+
+        mainMaterial = phys2D.createMaterial({
+            elasticity: 0,
+        });
+
+        world = phys2D.createWorld({
+            gravity: [0, 0],
+            velocityIterations: 8,
+            positionIterations: 8
+        });
+
+        borderThickness = 1;
+        borders = [];
+    borderColor = [1.0, 0.0, 0.0, 1.0];
+        borders.push({ color: borderColor, destinationRectangle: [0, 0, borderThickness, stageHeight] });
+        borders.push({ color: borderColor, destinationRectangle: [0, 0, stageWidth, borderThickness] });
+        borders.push({ color: borderColor, destinationRectangle: [(stageWidth - borderThickness), 0, stageWidth, stageHeight] });
+        borders.push({ color: borderColor, destinationRectangle: [0, (stageHeight - borderThickness), stageWidth, stageHeight] });
+
+        field = new Field(graphicsDevice, md, stageWidth, stageHeight, [new Droplet(graphicsDevice, md, 50, 50, 5, 2.0)], [new Obstacle(graphicsDevice, md, 100, 100, -50, 2.0)]);
+        protagonist = new Player(graphicsDevice, md, stageWidth, stageHeight);
+
+        bgSprites = [];
+	for (var i = 0; i < 100; i++) {
+            bgSprites[i] = new Background(graphicsDevice, md, stageWidth, stageHeight, 150 + Math.random() * 100, 300 + Math.random() * 1000);
+            bgSprites[i].setSpeed(Math.random() * 5);
+        }
+
+        keyCodes = [];
+    }
+
+    function endGame() {
+        document.getElementById("gameOverMenu").className = "";
+        TurbulenzEngine.clearInterval(intervalID);
+        intervalID = TurbulenzEngine.setInterval(menuUpdate, 1000 / 60);
+        clearColor = [0.0, 0.3, 1.0, 1.0];
+        document.getElementById("scoreLabel").innerHTML = "Score: " + score;
     }
 }
