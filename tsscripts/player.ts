@@ -57,7 +57,7 @@ class Player {
 
   loadTexture(graphicsDevice) {
     graphicsDevice.createTexture({
-      src: "assets/textures/protagonist.png",
+      src: "assets/textures/particle.png",
       mipmaps: true,
       onload: function (texture) {
         if (texture) {
