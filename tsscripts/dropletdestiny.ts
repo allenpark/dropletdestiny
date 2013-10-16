@@ -139,7 +139,7 @@ TurbulenzEngine.onload = function onloadFn() {
                         
                         var id = arb.bodyB.userData;
                         if(id == "obstacle"){
-                            trail = [];
+                            isOver = true;
                         }
                         else{
                         world.removeRigidBody(arb.bodyB);
@@ -156,7 +156,7 @@ TurbulenzEngine.onload = function onloadFn() {
                         //Remove Droplet rigid body from world
                         var id = arb.bodyA.userData;
                         if(id == "obstacle"){
-                            trail = [];
+                            isOver = true;
                         }
                         else{
                         world.removeRigidBody(arb.bodyA);
@@ -339,8 +339,8 @@ TurbulenzEngine.onload = function onloadFn() {
         borders.push({ color: borderColor, destinationRectangle: [(stageWidth - borderThickness), 0, stageWidth, stageHeight] });
         borders.push({ color: borderColor, destinationRectangle: [0, (stageHeight - borderThickness), stageWidth, stageHeight] });
 
-        field = new Field(graphicsDevice, md, stageWidth, stageHeight, [new Droplet(graphicsDevice, md, 50, 50, 5, 2.0)], [new Obstacle(graphicsDevice, md, 100, 100, -50, 2.0)]);
-        protagonist = new Player(graphicsDevice, md, stageWidth, stageHeight);
+        field = new Field(graphicsDevice, md, phys2D, stageWidth, stageHeight, [], [], world);
+        protagonist = new Player(graphicsDevice, phys2D, md, stageWidth, stageHeight);
 	    world.addRigidBody(protagonist.getRigidBody());
 
         bgSprites = []
