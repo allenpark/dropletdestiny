@@ -51,7 +51,7 @@ class Obstacle {
   }
   loadTexture(graphicsDevice) {
     graphicsDevice.createTexture({
-      src: "assets/textures/brick.png",
+      src: "assets/textures/twig1.png",
       mipmaps: true,
       onload: function (texture) {
         if (texture) {

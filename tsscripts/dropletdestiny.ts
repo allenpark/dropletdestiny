@@ -354,13 +354,13 @@ TurbulenzEngine.onload = function onloadFn() {
         
         //Mountain Ranges
         bgSprites[1] = new Mountain3(graphicsDevice, md, stageWidth, stageHeight, 110, 100, 540, 540);
-        bgSprites[1].setSpeed(.03*PSpeed);
+        bgSprites[1].setSpeed(.05*PSpeed);
         
         bgSprites[2] = new Mountain2(graphicsDevice, md, stageWidth, stageHeight, 110, 140, 540, 540);
-        bgSprites[2].setSpeed(.06*PSpeed);
+        bgSprites[2].setSpeed(.08*PSpeed);
         
         bgSprites[3] = new Mountain1(graphicsDevice, md, stageWidth, stageHeight, 110, 200, 540, 540);
-        bgSprites[3].setSpeed(.1*PSpeed);
+        bgSprites[3].setSpeed(.12*PSpeed);
         
         //Hills
         bgSprites[4] = new Hill2(graphicsDevice, md, stageWidth, stageHeight, 110, 400, 540, 540);
