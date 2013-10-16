@@ -113,7 +113,7 @@ TurbulenzEngine.onload = function onloadFn() {
             //Update position of rigid body associated with player
             protagonist.getRigidBody().setPosition(protagonist.getPosition());
             // Moves the droplets and obstacles.
-            playerSpeed = 1.0 + (trail.length)*.25;
+            playerSpeed = 1.0 + (trail.length)*.05;
             field.setSpeed(playerSpeed);
             PSpeed = .1 * (playerSpeed);
             field.update(world.timeStamp, draw2D);
@@ -140,42 +140,36 @@ TurbulenzEngine.onload = function onloadFn() {
                 if(arb.bodyA.isDynamic() && arb.bodyB.isDynamic()){
                     //world.removeRigidBody(arb.bodyA);
                     //console.log("Collisions!");
-                }
-
-                else if(arb.bodyA.isDynamic()){
+                } else if(arb.bodyA.isDynamic()) {
                     if(arb.bodyB.isKinematic()){
                         //console.log("Collisions!!");
                         //Remove Droplet rigid body from world
                         
                         var id = arb.bodyB.userData;
-                        if(id == "obstacle"){
+                        if(id == "obstacle") {
                             isOver = true;
                             score = trail.length;
-                        }
-                        else{
-                        world.removeRigidBody(arb.bodyB);
-                        //Remove Droplet sprite from world
-                        field.removeDroplet(id);
-                        trail.push([0]);
+                        } else {
+                            world.removeRigidBody(arb.bodyB);
+                            //Remove Droplet sprite from world
+                            var removedDroplet = field.removeDroplet(id);
+                            trail.push([0]);
                         }
                     }
-                }
-
-                else if(arb.bodyB.isDynamic()){
+                } else if(arb.bodyB.isDynamic()){
                     if(arb.bodyA.isKinematic()){
                         //console.log("Collisions!!!");
                         //Remove Droplet rigid body from world
                         var id = arb.bodyA.userData;
-                        if(id == "obstacle"){
+                        if(id == "obstacle") {
                             isOver = true;
                             score = trail.length;
-                        }
-                        else{
-                        world.removeRigidBody(arb.bodyA);
-                        //Remove Droplet sprite from world
-                        field.removeDroplet(id);
-                        trail.push([0])
-                        //Add new position to player droplet list
+                        } else {
+                            world.removeRigidBody(arb.bodyA);
+                            //Remove Droplet sprite from world
+                            var removedDroplet = field.removeDroplet(id);
+                            //Add new position to player droplet list
+                            trail.push([0]);
                         }
                     }
                 }
