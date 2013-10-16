@@ -232,7 +232,6 @@ TurbulenzEngine.onload = function onloadFn() {
             var wiggle = 0;
             var wiggleStep = wiggleStepStart;
             wiggleStepStart += wiggleStepStep;
-            console.log(wiggleStepStart + " " + wiggleStepStep);
             if (wiggleStepStart > wiggleMax + .0001 || wiggleStepStart < wiggleMin - .0001) {
                 wiggleStepStep *= -1;
                 wiggleStepStart += 2 * wiggleStepStep;
