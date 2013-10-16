@@ -82,11 +82,8 @@ class Field {
         this.obstacles.splice(i,1);
       }
     }
-
-    //var droplet = new Droplet(this.gd, this.md, this.pd, /*sprite,*/ 100, 200, 5, this.speed);
-    //this.droplets.push(droplet)
-    //this.world.addRigidBody(droplet.getRigidBody())
-    //console.log(this.droplets.length)
+    
+    this.speed += .001;
 
     if (time % 80 == 0) {
       this.addObstacle();
