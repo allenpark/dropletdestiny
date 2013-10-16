@@ -27,11 +27,12 @@
 /// <reference path="field.ts" />
 /// <reference path="droplet.ts" />
 /// <reference path="obstacle.ts" />
+/// <reference path="imageSprite.ts" />
 /// <reference path="background.ts" />
 
 
-TurbulenzEngine.onload = function onloadFn()
-{
+TurbulenzEngine.onload = function onloadFn() {
+
     var intervalID;
     var isOver;
 
@@ -95,38 +96,37 @@ TurbulenzEngine.onload = function onloadFn()
     function gameUpdate() {
         /* Update code goes here */
 
-        var canvasBox = md.v4Build(0,0, canvas.width, canvas.height);
-    
-        if (graphicsDevice.beginFrame())
-        {
+        var canvasBox = md.v4Build(0, 0, canvas.width, canvas.height);
+
+        if (graphicsDevice.beginFrame()) {
             graphicsDevice.clear([0.0, 0.0, 0.0, 1.0], 1.0);
-            world.step(1.0/60);
+            world.step(1.0 / 60);
 
             // Moves the player.
             protagonist.update(keyCodes);
             // Moves the droplets and obstacles.
-            field.update(0);
-            
+            field.update(world.timeStamp);
+
             // TODO: check for collisions.
 
             //DRAWS EVERYTHING
             // additive makes dark colors transparent...
             draw2D.begin('alpha');
-			
-			//rendering background
-			for(var i = 0; i < bgSprites.length; i++){
-				bgSprites[i].draw(draw2D);
-			}
-			
-            //field.draw(draw2D);
-			protagonist.draw(draw2D);
-			
+
+            //rendering background
+            for (var i = 0; i < bgSprites.length; i++) {
+                bgSprites[i].draw(draw2D);
+            }
+
+            field.draw(draw2D);
+            protagonist.draw(draw2D);
+
             for (var i = 0; i < 4; i++) {
-              // Uncomment following line to make a border.
-              //draw2D.draw(borders[i]);
+                // Uncomment following line to make a border.
+                //draw2D.draw(borders[i]);
             }
             draw2D.end();
-            
+
             // Drawing the polygon border.
             ctx.beginFrame(graphicsDevice, [0, 0, canvas.width, canvas.height]);
             var borderPoints = [[0, 0], [0, protagonist.height], [(canvas.height - protagonist.height) / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0 + canvas.height / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0, 0]];
@@ -134,7 +134,7 @@ TurbulenzEngine.onload = function onloadFn()
             ctx.save();
             ctx.beginPath();
             ctx.moveTo(point[0], point[1]);
-            for(i = 1; i < borderPoints.length; i += 1) {
+            for (i = 1; i < borderPoints.length; i += 1) {
                 point = borderPoints[i];
                 ctx.lineTo(point[0], point[1]);
             }
@@ -254,7 +254,7 @@ TurbulenzEngine.onload = function onloadFn()
 
         borderThickness = 1;
         borders = [];
-    borderColor = [1.0, 0.0, 0.0, 1.0];
+        borderColor = [1.0, 0.0, 0.0, 1.0];
         borders.push({ color: borderColor, destinationRectangle: [0, 0, borderThickness, stageHeight] });
         borders.push({ color: borderColor, destinationRectangle: [0, 0, stageWidth, borderThickness] });
         borders.push({ color: borderColor, destinationRectangle: [(stageWidth - borderThickness), 0, stageWidth, stageHeight] });
@@ -263,11 +263,23 @@ TurbulenzEngine.onload = function onloadFn()
         field = new Field(graphicsDevice, md, stageWidth, stageHeight, [new Droplet(graphicsDevice, md, 50, 50, 5, 2.0)], [new Obstacle(graphicsDevice, md, 100, 100, -50, 2.0)]);
         protagonist = new Player(graphicsDevice, md, stageWidth, stageHeight);
 
-        bgSprites = [];
+        bgSprites = []
 	for (var i = 0; i < 100; i++) {
-            bgSprites[i] = new Background(graphicsDevice, md, stageWidth, stageHeight, 150 + Math.random() * 100, 300 + Math.random() * 1000);
+            bgSprites[i] = new imageSprite(graphicsDevice, md, stageWidth, stageHeight, 150 + Math.random() * 100, 300 + Math.random() * 1000, 32, 32);
             bgSprites[i].setSpeed(Math.random() * 5);
         }
+
+        for (var i = 100; i < 120; i++) {
+            bgSprites[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, 0, 300 + Math.random() * 10000, 100, 100);
+            bgSprites[i].setSpeed(3);
+        }
+
+        for (var i = 120; i < 140; i++) {
+            bgSprites[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, 110, 300 + Math.random() * 10000, 100, 100);
+            bgSprites[i].setSpeed(3);
+        }
+
+        bgSprites[0] = new Background(graphicsDevice, md, stageWidth, stageHeight, 0, 0, 640, 540);
 
         keyCodes = [];
     }
