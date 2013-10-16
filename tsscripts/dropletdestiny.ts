@@ -89,7 +89,7 @@ TurbulenzEngine.onload = function onloadFn() {
     var playerSpeed;
     var PSpeed;
 
-    document.getElementById("mainMenu").className = "";
+    document.getElementById("mainMenu").className = "show";
     intervalID = TurbulenzEngine.setInterval(menuUpdate, 1000 / 60);
 
 
@@ -285,7 +285,7 @@ TurbulenzEngine.onload = function onloadFn() {
         var index = keyCodes.indexOf(e);
         // pause the game if p is pressed
         if (e == inputDevice.keyCodes.P) {
-            document.getElementById("pauseMenu").className = "";
+            document.getElementById("pauseMenu").className = "show";
             TurbulenzEngine.clearInterval(intervalID);
             intervalID = TurbulenzEngine.setInterval(menuUpdate, 1000 / 60);
 
@@ -313,12 +313,12 @@ TurbulenzEngine.onload = function onloadFn() {
 
     function handleCreditsButtonM() {
         document.getElementById("mainMenu").className = "hidden";
-        document.getElementById("creditsMenu").className = "";
+        document.getElementById("creditsMenu").className = "show";
     }
 
     function handleMainMenuButtonC() {
         document.getElementById("creditsMenu").className = "hidden";
-        document.getElementById("mainMenu").className = "";
+        document.getElementById("mainMenu").className = "show";
     }
 
     function handleResumeButtonP() {
@@ -330,7 +330,7 @@ TurbulenzEngine.onload = function onloadFn() {
 
     function handleQuitButtonP() {
         document.getElementById("pauseMenu").className = "hidden";
-        document.getElementById("mainMenu").className = "";
+        document.getElementById("mainMenu").className = "show";
         startMenu();
         clearColor = [0.0, 0.3, 1.0, 1.0];
     }
@@ -342,7 +342,7 @@ TurbulenzEngine.onload = function onloadFn() {
 
     function handleMainMenuButtonGO() {
         document.getElementById("gameOverMenu").className = "hidden";
-        document.getElementById("mainMenu").className = "";
+        document.getElementById("mainMenu").className = "show";
         startMenu();
         clearColor = [0.0, 0.3, 1.0, 1.0];
     }
@@ -446,7 +446,7 @@ TurbulenzEngine.onload = function onloadFn() {
     }
 
     function endGame() {
-        document.getElementById("gameOverMenu").className = "";
+        document.getElementById("gameOverMenu").className = "show";
         TurbulenzEngine.clearInterval(intervalID);
         intervalID = TurbulenzEngine.setInterval(menuUpdate, 1000 / 60);
         clearColor = [0.0, 0.3, 1.0, 1.0];
