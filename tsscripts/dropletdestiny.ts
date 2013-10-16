@@ -82,6 +82,10 @@ TurbulenzEngine.onload = function onloadFn() {
     var trees = [];
     var keyCodes;
     var trail;
+    var wiggleStepStart = 0.0;
+    var wiggleStepStep = 0.025;
+    var wiggleMin = -2.0;
+    var wiggleMax = 2.0;
     var playerSpeed;
     var PSpeed;
 
@@ -118,9 +122,10 @@ TurbulenzEngine.onload = function onloadFn() {
             PSpeed = .1 * (playerSpeed);
             field.update(world.timeStamp, draw2D);
 
-            if (world.timeStamp % 4 == 0) {
-              trees.push(new Tree(graphicsDevice, md, stageWidth, stageHeight, -1*(Math.random()*100) - 25, 300, 100, 100));
+            if (world.timeStamp % 8 == 0) {
+              trees.push(new Tree(graphicsDevice, md, stageWidth, stageHeight, -1*(Math.random()*75) - 25, 300, 100, 100));
             }
+
 
             // TODO: check for collisions.
             //console.log("About to check collisions");
@@ -224,15 +229,30 @@ TurbulenzEngine.onload = function onloadFn() {
             //var borderPoints = [[0, 0], [0, protagonist.height], [(canvas.height - protagonist.height) / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0 + canvas.height / 2.0, canvas.height], [5 * protagonist.max_x / 2.0 + protagonist.height / 2.0 + protagonist.width / 2.0, 0]];
             //var point = borderPoints[0];
             var yPosition = protagonist.getPosition()[1];
+            var wiggle = 0;
+            var wiggleStep = wiggleStepStart;
+            wiggleStepStart += wiggleStepStep;
+            console.log(wiggleStepStart + " " + wiggleStepStep);
+            if (wiggleStepStart > wiggleMax + .0001 || wiggleStepStart < wiggleMin - .0001) {
+                wiggleStepStep *= -1;
+                wiggleStepStart += 2 * wiggleStepStep;
+            }
             for(var i = 0; i < trail.length; i++){
                 ctx.save();
                 ctx.beginPath();
-                ctx.arc(2 * trail[i] + yPosition + 16, -trail[i] + 2 * yPosition + 16, 16, 0, 2*Math.PI, false);
+                var trailPosition = trail[i] + wiggle;
+                ctx.arc(2 * trailPosition + yPosition + 16, -trailPosition + 2 * yPosition + 16, 16, 0, 2*Math.PI, false);
                 ctx.closePath();
                 yPosition-= 3;
                 ctx.fillStyle = "#42C2E9";
                 ctx.fill();
                 ctx.restore();
+                
+                wiggle += wiggleStep;
+                if (wiggle > wiggleMax + .0001 || wiggle < wiggleMin - .0001) {
+                    wiggleStep *= -1;
+                    wiggle += 2 * wiggleStep;
+                }
             }
 
             //ctx.save();
@@ -412,11 +432,11 @@ TurbulenzEngine.onload = function onloadFn() {
 
         bgSprites[50] = new MountainSide(graphicsDevice, md, stageWidth, stageHeight, 0, 0, 640, 540);
         
-        //Trees
-        for (var i = 0; i < 50; i++) {
-            trees[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, -1*(Math.random()*100) - 25, 50 + (1200)*Math.random(), 100, 100);
-            trees[i].setSpeed(playerSpeed);
-        }
+//        //Trees
+//        for (var i = 0; i < 50; i++) {
+//            trees[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, -1*(Math.random()*100) - 25, 50 + (1200)*Math.random(), 100, 100);
+//            trees[i].setSpeed(playerSpeed);
+//        }
 		
 		////Bushes
 		//for (var i = 100; i < 150; i++) {

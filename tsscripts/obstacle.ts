@@ -27,7 +27,7 @@ class Obstacle {
       type: 'kinematic',
       position: this.getPosition(),
       shapes: [phys2D.createPolygonShape({
-        vertices: phys2D.createBoxVertices(this.width/2, this.height/2)
+        vertices: phys2D.createBoxVertices(this.width/3, this.height/3)
       })],
       userData: 'obstacle'
     });
