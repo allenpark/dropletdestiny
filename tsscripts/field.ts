@@ -3,6 +3,7 @@ class Field {
   height: number = 500; // TODO: Find the right number.
   droplets: Droplet[] = [];
   obstacles: Obstacle[] = [];
+  trees: Tree[] = [];
   stageWidth: number;
   stageHeight: number;
   speed: number;
@@ -32,6 +33,10 @@ class Field {
        this.world.addRigidBody(this.obstacles[i].getRigidBody())
     }
 
+  }
+
+  setSpeed(speed) {
+    this.speed = speed;
   }
 
   private isInBounds(object){
@@ -68,7 +73,7 @@ class Field {
     this.world.addRigidBody(this.obstacles[this.obstacles.length-1].getRigidBody());
   }
 
-  update(time) {
+  update(time, draw2D) {
     //update object positions and remove those that are out of bounds
     for (var i = this.droplets.length - 1; i >= 0; i--) {
       this.droplets[i].updatePosition(time);
@@ -84,6 +89,11 @@ class Field {
     }
     
     this.speed += .001;
+    draw2D.begin('alpha');
+    for (var i = this.trees.length - 1; i >= 0; i--) {
+      this.trees[i].draw(draw2D);
+    }
+    draw2D.end();
 
     if (time % 80 == 0) {
       this.addObstacle();

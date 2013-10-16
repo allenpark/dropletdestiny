@@ -68,3 +68,8 @@ class imageSprite {
     return 0 <= x && x <= this.stageWidth - this.width && 0 <= y && y <= this.stageHeight - this.height;
   }
 
+  inCanvasY() {
+    var y = this.getSpriteY();
+    return 0 <= y;
+  }
+}
