@@ -228,7 +228,7 @@ TurbulenzEngine.onload = function onloadFn() {
     function startGame() {
         TurbulenzEngine.clearInterval(intervalID);
         intervalID = TurbulenzEngine.setInterval(gameUpdate, 1000 / 60);
-        document.getElementById("turbulenz_game_engine_canvas").focus();
+        //document.getElementById("turbulenz_game_engine_canvas").focus();
 
         isOver = false;
         score = 0;
