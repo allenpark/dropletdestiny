@@ -131,40 +131,35 @@ TurbulenzEngine.onload = function onloadFn() {
                 if(arb.bodyA.isDynamic() && arb.bodyB.isDynamic()){
                     //world.removeRigidBody(arb.bodyA);
                     //console.log("Collisions!");
-                }
-
-                else if(arb.bodyA.isDynamic()){
+                } else if(arb.bodyA.isDynamic()) {
                     if(arb.bodyB.isKinematic()){
                         //console.log("Collisions!!");
                         //Remove Droplet rigid body from world
                         
                         var id = arb.bodyB.userData;
-                        if(id == "obstacle"){
+                        if(id == "obstacle") {
                             isOver = true;
-                        }
-                        else{
-                        world.removeRigidBody(arb.bodyB);
-                        //Remove Droplet sprite from world
-                        field.removeDroplet(id);
-                        trail.push([0]);
+                        } else {
+                            world.removeRigidBody(arb.bodyB);
+                            //Remove Droplet sprite from world
+                            var removedDroplet = field.removeDroplet(id);
+                            trail.push([0]);
                         }
                     }
-                }
-
-                else if(arb.bodyB.isDynamic()){
+                } else if(arb.bodyB.isDynamic()){
                     if(arb.bodyA.isKinematic()){
                         //console.log("Collisions!!!");
                         //Remove Droplet rigid body from world
                         var id = arb.bodyA.userData;
-                        if(id == "obstacle"){
+                        if(id == "obstacle") {
                             isOver = true;
-                        }
-                        else{
-                        world.removeRigidBody(arb.bodyA);
-                        //Remove Droplet sprite from world
-                        field.removeDroplet(id);
-                        trail.push([0])
-                        //Add new position to player droplet list
+                        } else {
+                            score += field.getDroplet(id).points;
+                            world.removeRigidBody(arb.bodyA);
+                            //Remove Droplet sprite from world
+                            var removedDroplet = field.removeDroplet(id);
+                            //Add new position to player droplet list
+                            trail.push([0]);
                         }
                     }
                 }

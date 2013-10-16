@@ -53,17 +53,15 @@ class Field {
   addDroplet(time) {
     this.droplets.push(new Droplet(this.gd, this.md, this.pd, Math.random()*100, 350, 5, this.speed, time));
     this.world.addRigidBody(this.droplets[this.droplets.length-1].getRigidBody());
+  }
 
- }
-
- removeDroplet(id){
+  removeDroplet(id) {
     for (var i = 0; i < this.droplets.length; i++){
-      if(this.droplets[i].id == id){
-        this.droplets.splice(i,1);
-        break;
+      if (this.droplets[i].id == id) {
+        return this.droplets.splice(i,1)[0];
       }
     }
- }
+  }
 
   addObstacle() {
     this.obstacles.push(new Obstacle(this.gd, this.md, this.pd, Math.random()*100, 350, -50, this.speed));
