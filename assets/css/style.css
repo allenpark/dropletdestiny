@@ -1,6 +1,6 @@
 @font-face {
   font-family: BlackCarrot;
-  src: url('/assets/fonts/BlackCarrot.ttf');
+  src: url('../fonts/BlackCarrot.ttf');
 }
 
 body {
@@ -39,7 +39,7 @@ body {
     text-align: center;
     width: 640px;
     height: 540px;
-    background-image:url('/assets/textures/DropletDestinyTitle-small.png');
+    background-image:url('../textures/DropletDestinyTitle-small.png');
     background-repeat: no-repeat;
 }
 
@@ -60,7 +60,7 @@ body {
     text-align: center;
     width: 640px;
     height: 540px;
-    background-image:url('/assets/textures/DropletDestinyTitle-small.png');
+    background-image:url('../textures/DropletDestinyTitle-small.png');
     background-repeat: no-repeat;
 }
 
@@ -76,7 +76,7 @@ body {
     text-align: center;
     width: 640px;
     height: 540px;
-    background-image:url('/assets/textures/DropletDestinyTitle-small.png');
+    background-image:url('../textures/DropletDestinyTitle-small.png');
     background-repeat: no-repeat;
 }
 
@@ -96,7 +96,7 @@ body {
     text-align: center;
     width: 640px;
     height: 540px;
-    background-image:url('/assets/textures/DropletDestinyTitle-small.png');
+    background-image:url('../textures/DropletDestinyTitle-small.png');
     background-repeat: no-repeat;
 }
 

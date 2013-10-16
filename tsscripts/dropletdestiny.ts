@@ -118,9 +118,10 @@ TurbulenzEngine.onload = function onloadFn() {
             PSpeed = .1 * (playerSpeed);
             field.update(world.timeStamp, draw2D);
 
-            if (world.timeStamp % 4 == 0) {
-              trees.push(new Tree(graphicsDevice, md, stageWidth, stageHeight, -1*(Math.random()*100) - 25, 300, 100, 100));
+            if (world.timeStamp % 8 == 0) {
+              trees.push(new Tree(graphicsDevice, md, stageWidth, stageHeight, -1*(Math.random()*75) - 25, 300, 100, 100));
             }
+
 
             // TODO: check for collisions.
             //console.log("About to check collisions");
@@ -412,11 +413,11 @@ TurbulenzEngine.onload = function onloadFn() {
 
         bgSprites[50] = new MountainSide(graphicsDevice, md, stageWidth, stageHeight, 0, 0, 640, 540);
         
-        //Trees
-        for (var i = 0; i < 50; i++) {
-            trees[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, -1*(Math.random()*100) - 25, 50 + (1200)*Math.random(), 100, 100);
-            trees[i].setSpeed(playerSpeed);
-        }
+//        //Trees
+//        for (var i = 0; i < 50; i++) {
+//            trees[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, -1*(Math.random()*100) - 25, 50 + (1200)*Math.random(), 100, 100);
+//            trees[i].setSpeed(playerSpeed);
+//        }
 		
 		////Bushes
 		//for (var i = 100; i < 150; i++) {
