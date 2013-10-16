@@ -29,7 +29,10 @@ class Player {
     });
     this.body = phys2D.createRigidBody({
       type: 'dynamic', 
-      position: this.getPosition()
+      position: this.getPosition(),
+      shapes: [phys2D.createPolygonShape({
+        vertices: phys2D.createBoxVertices(this.width/2, this.height/2)
+      })]
     });
     this.stageWidth = canvasX;
     this.stageHeight = canvasY;
