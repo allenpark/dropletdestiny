@@ -345,7 +345,7 @@ TurbulenzEngine.onload = function onloadFn() {
 	    world.addRigidBody(protagonist.getRigidBody());
 
         //Replace this with speed of player! (Keep it low!)
-        PSpeed = .1;
+        PSpeed = .4;
 
         bgSprites = []
 
@@ -384,7 +384,7 @@ TurbulenzEngine.onload = function onloadFn() {
         
         //Trees
         for (var i = 51; i < 70; i++) {
-            bgSprites[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, 0, 300 + Math.random()*10000, 100, 100);
+            bgSprites[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, 0 - Math.random()*100, 300 + Math.random()*10000, 100, 100);
             bgSprites[i].setSpeed(7*PSpeed);
         }
         
