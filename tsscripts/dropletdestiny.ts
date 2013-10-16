@@ -371,12 +371,12 @@ TurbulenzEngine.onload = function onloadFn() {
         
         //Clouds
         for (var i = 6; i < 30; i++) {
-            bgSprites[i] = new Cloud1(graphicsDevice, md, stageWidth, stageHeight, 50 + Math.random()*200, 20 + Math.random()*100, 100, 50);
+            bgSprites[i] = new Cloud1(graphicsDevice, md, stageWidth, stageHeight, 50 + Math.random()*400, Math.random()*200, 150, 50);
             bgSprites[i].setSpeed((Math.random()*.1 + .1)*PSpeed);
         }
         
         for (var i = 30; i < 50; i++) {
-            bgSprites[i] = new Cloud2(graphicsDevice, md, stageWidth, stageHeight, 50 + Math.random()*200, 100 + Math.random()*100, 200, 100);
+            bgSprites[i] = new Cloud2(graphicsDevice, md, stageWidth, stageHeight, 50 + Math.random()*400, Math.random()*500, 300, 100);
             bgSprites[i].setSpeed((Math.random()*.2 + .5)*PSpeed);
         }
 
@@ -392,6 +392,12 @@ TurbulenzEngine.onload = function onloadFn() {
             bgSprites[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, 100, 300 + Math.random()*10000, 100, 100);
             bgSprites[i].setSpeed(7*PSpeed);
         }
+		
+		//Bushes
+		for (var i = 100; i < 150; i++) {
+			bgSprites[i] = new Shrub(graphicsDevice, md, stageWidth, stageHeight, 0 - Math.random()*100, 300 + Math.random()*10000, 50, 50);
+            bgSprites[i].setSpeed(7*PSpeed);
+		}
         keyCodes = [];
     }
 
