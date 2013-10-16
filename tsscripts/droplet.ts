@@ -5,8 +5,8 @@ class Droplet {
   y: number;
   points: number;
   speed: number;
-  width:  number = 32; 
-  height: number = 32;
+  width:  number = 20; 
+  height: number = 20;
   id: number;
 
   constructor(graphicsDevice, mathDevice, phys2D, /*sprite,*/ x, y, points, speed, time) {

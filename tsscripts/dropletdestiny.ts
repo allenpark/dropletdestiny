@@ -381,7 +381,7 @@ TurbulenzEngine.onload = function onloadFn() {
 	    world.addRigidBody(protagonist.getRigidBody());
 
         //Replace this with speed of player! (Keep it low!)
-        PSpeed = .1;
+        PSpeed = .4;
 
         bgSprites = []
 
@@ -390,13 +390,13 @@ TurbulenzEngine.onload = function onloadFn() {
         
         //Mountain Ranges
         bgSprites[1] = new Mountain3(graphicsDevice, md, stageWidth, stageHeight, 110, 100, 540, 540);
-        bgSprites[1].setSpeed(.03*PSpeed);
+        bgSprites[1].setSpeed(.05*PSpeed);
         
         bgSprites[2] = new Mountain2(graphicsDevice, md, stageWidth, stageHeight, 110, 140, 540, 540);
-        bgSprites[2].setSpeed(.06*PSpeed);
+        bgSprites[2].setSpeed(.08*PSpeed);
         
         bgSprites[3] = new Mountain1(graphicsDevice, md, stageWidth, stageHeight, 110, 200, 540, 540);
-        bgSprites[3].setSpeed(.1*PSpeed);
+        bgSprites[3].setSpeed(.12*PSpeed);
         
         //Hills
         bgSprites[4] = new Hill2(graphicsDevice, md, stageWidth, stageHeight, 110, 400, 540, 540);
@@ -407,12 +407,12 @@ TurbulenzEngine.onload = function onloadFn() {
         
         //Clouds
         for (var i = 6; i < 30; i++) {
-            bgSprites[i] = new Cloud1(graphicsDevice, md, stageWidth, stageHeight, 50 + Math.random()*200, 20 + Math.random()*100, 100, 50);
+            bgSprites[i] = new Cloud1(graphicsDevice, md, stageWidth, stageHeight, 50 + Math.random()*400, Math.random()*200, 150, 50);
             bgSprites[i].setSpeed((Math.random()*.1 + .1)*PSpeed);
         }
         
         for (var i = 30; i < 50; i++) {
-            bgSprites[i] = new Cloud2(graphicsDevice, md, stageWidth, stageHeight, 50 + Math.random()*200, 100 + Math.random()*100, 200, 100);
+            bgSprites[i] = new Cloud2(graphicsDevice, md, stageWidth, stageHeight, 50 + Math.random()*400, Math.random()*500, 300, 100);
             bgSprites[i].setSpeed((Math.random()*.2 + .5)*PSpeed);
         }
 
@@ -423,11 +423,12 @@ TurbulenzEngine.onload = function onloadFn() {
             trees[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, -1*(Math.random()*100) - 25, 50 + (1200)*Math.random(), 100, 100);
             trees[i].setSpeed(playerSpeed);
         }
-        
-//        for (var i = 70; i < 100; i++) {
-//            bgSprites[i] = new Tree(graphicsDevice, md, stageWidth, stageHeight, 100, 300 + Math.random()*10000, 100, 100);
-//            bgSprites[i].setSpeed(7*PSpeed);
-//        }
+		
+		////Bushes
+		//for (var i = 100; i < 150; i++) {
+		//	bgSprites[i] = new Shrub(graphicsDevice, md, stageWidth, stageHeight, 0 - Math.random()*100, 300 + Math.random()*10000, 50, 50);
+        //    bgSprites[i].setSpeed(7*PSpeed);
+		//}
         keyCodes = [];
     }
 
