@@ -88,7 +88,6 @@ class Field {
       }
     }
     
-    this.speed += .001;
     draw2D.begin('alpha');
     for (var i = this.trees.length - 1; i >= 0; i--) {
       this.trees[i].draw(draw2D);

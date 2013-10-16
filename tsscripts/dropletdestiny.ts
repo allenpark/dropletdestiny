@@ -113,7 +113,7 @@ TurbulenzEngine.onload = function onloadFn() {
             //Update position of rigid body associated with player
             protagonist.getRigidBody().setPosition(protagonist.getPosition());
             // Moves the droplets and obstacles.
-            playerSpeed = 1.0 + (trail.length)*.25;
+            playerSpeed = 1.0 + (trail.length)*.05;
             field.setSpeed(playerSpeed);
             PSpeed = .1 * (playerSpeed);
             field.update(world.timeStamp, draw2D);
